@@ -1,15 +1,16 @@
-import { Pool } from 'pg';
+// api/database.js - To'g'irlangan versiya
+const { Pool } = require('pg');
 
-// PostgreSQL ulanishi (Supabase)
+// PostgreSQL connection (Supabase)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-// Jadvallarni boshlash
+// Initialize database tables
 async function initDB() {
   try {
-    // 1. Users jadvali
+    // 1. Users jadvali (asosiy foydalanuvchilar)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -35,7 +36,7 @@ async function initDB() {
       )
     `);
 
-    // 3. Tests jadvali
+    // 3. Tests jadvali (admin_id ni telegram_id ga o'zgartirdim)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS tests (
         id SERIAL PRIMARY KEY,
@@ -97,7 +98,7 @@ async function initDB() {
   }
 }
 
-// User funksiyalari
+// User functions
 async function saveUser(telegramId, username, firstName, lastName, fullName, isAdmin = false) {
   try {
     const result = await pool.query(
@@ -147,9 +148,10 @@ async function updateUserActivity(telegramId) {
   }
 }
 
-// Admin funksiyalari
+// Admin functions
 async function addAdmin(telegramId, username, fullName) {
   try {
+    // Avval user ni admin qilib belgilaymiz
     await pool.query(
       `INSERT INTO users (telegram_id, username, full_name, is_admin)
        VALUES ($1, $2, $3, true)
@@ -158,6 +160,7 @@ async function addAdmin(telegramId, username, fullName) {
       [telegramId, username, fullName]
     );
 
+    // Keyin admins jadvaliga qo'shamiz
     const adminResult = await pool.query(
       `INSERT INTO admins (telegram_id, username, full_name)
        VALUES ($1, $2, $3)
@@ -186,7 +189,7 @@ async function isAdmin(telegramId) {
   }
 }
 
-// Test funksiyalari
+// Test functions - admin_id ni telegram_id sifatida ishlatamiz
 async function createTest(code, title, adminTelegramId, openCount, closedCount, optionsCount) {
   try {
     const result = await pool.query(
@@ -203,8 +206,10 @@ async function createTest(code, title, adminTelegramId, openCount, closedCount, 
 
 async function saveTestAnswers(testId, answers) {
   try {
+    // Avvalgi javoblarni o'chirish
     await pool.query('DELETE FROM test_answers WHERE test_id = $1', [testId]);
 
+    // Yangi javoblarni saqlash
     for (const [key, value] of Object.entries(answers)) {
       const [type, number] = key.split('-');
       await pool.query(
@@ -245,7 +250,7 @@ async function getTestAnswers(testId) {
   }
 }
 
-// Student funksiyalari
+// Student functions
 async function saveStudent(telegramId, fullName, testCode) {
   try {
     const result = await pool.query(
@@ -261,6 +266,7 @@ async function saveStudent(telegramId, fullName, testCode) {
 
 async function saveStudentAnswers(studentId, answers, score, total) {
   try {
+    // Student javoblarini saqlash
     for (const [key, value] of Object.entries(answers)) {
       const [type, number] = key.split('-');
       await pool.query(
@@ -269,6 +275,7 @@ async function saveStudentAnswers(studentId, answers, score, total) {
       );
     }
 
+    // Student natijasini yangilash
     const percentage = (score / total) * 100;
     await pool.query(
       'UPDATE students SET completed_at = CURRENT_TIMESTAMP, score = $1, total_questions = $2, percentage = $3 WHERE id = $4',
@@ -301,7 +308,7 @@ async function getStudentResults(testCode) {
   }
 }
 
-// Statistikalar
+// Statistics functions
 async function getStatistics() {
   try {
     const totalUsers = await pool.query('SELECT COUNT(*) FROM users');
@@ -326,7 +333,7 @@ async function getStatistics() {
   }
 }
 
-export {
+module.exports = {
   pool,
   initDB,
   saveUser,

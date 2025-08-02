@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "api/{init,save-user,save-answers,submit-test,statistics,get-results,auth,create-test,health,get-test,get-user}.js",
       "use": "@vercel/node"
     },
     {
