@@ -251,6 +251,7 @@
             </div>
             
             <button class="btn btn-primary" onclick="createTest()">Test yaratish</button>
+            <button class="btn btn-danger" onclick="debugStorage()">Debug Storage</button>
             
             <div id="answers-section" class="hidden">
                 <h3>Javoblarni kiriting:</h3>
@@ -418,25 +419,48 @@
             }
 
             const answers = {};
+            let emptyCount = 0;
 
             // Open answers
             for (let i = 1; i <= testInfo.openCount; i++) {
-                const answer = document.getElementById(`open-${i}`).value.trim();
-                if (answer) {
-                    answers[`open-${i}`] = answer.toLowerCase();
+                const element = document.getElementById(`open-${i}`);
+                if (element) {
+                    const answer = element.value.trim();
+                    if (answer) {
+                        answers[`open-${i}`] = answer.toLowerCase();
+                    } else {
+                        emptyCount++;
+                    }
                 }
             }
 
             // Closed answers
             for (let i = 1; i <= testInfo.closedCount; i++) {
-                const answer = document.getElementById(`closed-${i}`).value;
-                answers[`closed-${i}`] = answer;
+                const element = document.getElementById(`closed-${i}`);
+                if (element) {
+                    const answer = element.value;
+                    if (answer) {
+                        answers[`closed-${i}`] = answer;
+                    } else {
+                        emptyCount++;
+                    }
+                }
             }
 
+            if (emptyCount > 0) {
+                showMessage(`${emptyCount} ta javob kiritilmagan!`, 'error');
+                return;
+            }
+
+            // Save answers
             testData[testCode].answers = answers;
             localStorage.setItem('testData', JSON.stringify(testData));
             
-            showMessage('Javoblar saqlandi!', 'success');
+            // Debug - console da ko'rsatish
+            console.log('Saqlangan testData:', testData);
+            console.log('Javoblar:', answers);
+            
+            showMessage(`Javoblar saqlandi! (${Object.keys(answers).length} ta javob)`, 'success');
         }
 
         // Student: Start test
@@ -449,8 +473,17 @@
                 return;
             }
 
+            // LocalStorage dan ma'lumot olish
+            testData = JSON.parse(localStorage.getItem('testData') || '{}');
+            
             if (!testData[testCode]) {
-                showMessage('Test topilmadi!', 'error');
+                showMessage('Test topilmadi yoki admin javoblarni kiritmagan!', 'error');
+                console.log('Mavjud testlar:', Object.keys(testData));
+                return;
+            }
+
+            if (!testData[testCode].answers || Object.keys(testData[testCode].answers).length === 0) {
+                showMessage('Test javoblari kiritilmagan! Admin bilan bog\'laning.', 'error');
                 return;
             }
 
@@ -555,7 +588,15 @@
         function loadResults() {
             const testCode = document.getElementById('results-test-code').value.trim();
             
-            if (!testCode || !testData[testCode]) {
+            if (!testCode) {
+                showMessage('Test kodi kerak!', 'error');
+                return;
+            }
+
+            // LocalStorage dan yangi ma'lumot olish
+            testData = JSON.parse(localStorage.getItem('testData') || '{}');
+            
+            if (!testData[testCode]) {
                 showMessage('Test topilmadi!', 'error');
                 return;
             }
@@ -627,6 +668,30 @@
                     document.body.removeChild(messageDiv);
                 }
             }, 5000);
+        }
+
+        // Debug function
+        function debugStorage() {
+            const storage = localStorage.getItem('testData');
+            console.log('LocalStorage content:', storage);
+            
+            if (storage) {
+                const parsed = JSON.parse(storage);
+                console.log('Parsed testData:', parsed);
+                
+                let debugInfo = 'LocalStorage ma\'lumotlari:\n\n';
+                Object.keys(parsed).forEach(testCode => {
+                    const test = parsed[testCode];
+                    debugInfo += `Test: ${testCode}\n`;
+                    debugInfo += `- Title: ${test.title}\n`;
+                    debugInfo += `- Savollar: ${test.openCount + test.closedCount}\n`;
+                    debugInfo += `- Javoblar: ${Object.keys(test.answers || {}).length}\n\n`;
+                });
+                
+                alert(debugInfo);
+            } else {
+                alert('LocalStorage bo\'sh!');
+            }
         }
     </script>
 </body>
