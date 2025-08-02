@@ -300,11 +300,17 @@
     <script>
         // Global variables
         let telegramId = null;
-        let userRole = 'admin';  // Default admin
+        let userRole = 'student';  // Default student
         let currentTest = null;
+        let isAdmin = false;
 
         // Admin IDs - sizning ID ingiz
         const ADMIN_IDS = [973358587];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
 
         // Telegram Web App initialization
         if (window.Telegram && window.Telegram.WebApp) {
@@ -322,16 +328,58 @@
         if (urlParams.get('telegram_id')) {
             telegramId = parseInt(urlParams.get('telegram_id'));
         }
-        userRole = urlParams.get('role') || 'admin';
+        userRole = urlParams.get('role') || 'student';
 
-        // User info ko'rsatish
-        document.getElementById('user-info').innerHTML = `🆔 ID: ${telegramId || 'Unknown'} | 👤 Role: ${userRole}`;
+        function initializeApp() {
+            // Admin ekanligini tekshirish
+            isAdmin = ADMIN_IDS.includes(telegramId);
+            
+            // User info ko'rsatish
+            document.getElementById('user-info').innerHTML = `🆔 ID: ${telegramId || 'Unknown'} | 👤 Role: ${userRole} | 👑 Admin: ${isAdmin ? 'Ha' : 'Yo\'q'}`;
+            
+            // Tab larni ko'rsatish/yashirish
+            setupInterface();
+        }
+
+        function setupInterface() {
+            const tabsContainer = document.querySelector('.tabs');
+            
+            if (isAdmin && userRole === 'admin') {
+                // Admin uchun barcha tablar
+                tabsContainer.innerHTML = `
+                    <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
+                    <button class="tab-btn" onclick="showTab('student')">Test Ko'rish</button>
+                    <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+                `;
+                document.getElementById('admin-tab').classList.add('active');
+                document.getElementById('student-tab').classList.remove('active');
+                document.getElementById('results-tab').classList.remove('active');
+            } else {
+                // Student uchun faqat test topshirish
+                tabsContainer.innerHTML = `
+                    <button class="tab-btn active" onclick="showTab('student')">Test Topshirish</button>
+                `;
+                document.getElementById('admin-tab').classList.remove('active');
+                document.getElementById('student-tab').classList.add('active');
+                document.getElementById('results-tab').classList.remove('active');
+                
+                // Admin panelni yashirish
+                document.getElementById('admin-tab').style.display = 'none';
+                document.getElementById('results-tab').style.display = 'none';
+            }
+        }
 
         // LocalStorage dan ma'lumotlarni olish
         let testData = JSON.parse(localStorage.getItem('testData') || '{}');
 
         // Tab switching
         function showTab(tabName) {
+            // Admin huquqlarini tekshirish
+            if ((tabName === 'admin' || tabName === 'results') && !isAdmin) {
+                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                return;
+            }
+            
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -345,6 +393,11 @@
 
         // Admin: Create test
         function createTest() {
+            if (!isAdmin) {
+                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                return;
+            }
+            
             const testCode = document.getElementById('admin-test-code').value.trim();
             const testTitle = document.getElementById('admin-test-title').value.trim();
             const openCount = parseInt(document.getElementById('open-questions-count').value);
@@ -410,6 +463,11 @@
 
         // Save answers
         function saveAnswers() {
+            if (!isAdmin) {
+                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                return;
+            }
+            
             const testCode = document.getElementById('admin-test-code').value.trim();
             const testInfo = testData[testCode];
             
@@ -586,6 +644,11 @@
 
         // Load results
         function loadResults() {
+            if (!isAdmin) {
+                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                return;
+            }
+            
             const testCode = document.getElementById('results-test-code').value.trim();
             
             if (!testCode) {
