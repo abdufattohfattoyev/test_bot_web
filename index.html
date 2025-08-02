@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Tizimi</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #4facfe;
+            border-bottom: 3px solid #4facfe;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #fa4b99 0%, #ff6b6b 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .question-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .answer-input {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        .result-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .access-denied {
+            text-align: center;
+            padding: 50px;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Test Tizimi</h1>
+            <p id="role-info">Yuklanmoqda...</p>
+            <div class="user-info" id="user-info"></div>
+        </div>
+
+        <!-- Access Denied -->
+        <div id="access-denied" class="access-denied hidden">
+            <h2>❌ Kirishga ruxsat berilmadi</h2>
+            <p>Sizda admin huquqlari yo'q</p>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <h2>⏳ Yuklanmoqda...</h2>
+        </div>
+
+        <div id="main-content" class="hidden">
+            <div class="tabs" id="tabs-container">
+                <!-- Tabs will be dynamically created -->
+            </div>
+
+            <!-- Admin Panel -->
+            <div id="admin-tab" class="tab-content">
+                <h2>🔧 Admin Panel</h2>
+
+                <div class="form-group">
+                    <label>Test kodi:</label>
+                    <input type="text" id="admin-test-code" placeholder="Masalan: TEST001">
+                </div>
+
+                <div class="form-group">
+                    <label>Test nomi:</label>
+                    <input type="text" id="admin-test-title" placeholder="Test nomini kiriting">
+                </div>
+
+                <div class="form-group">
+                    <label>Ochiq savollar soni:</label>
+                    <input type="number" id="open-questions-count" min="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Yopiq savollar soni:</label>
+                    <input type="number" id="closed-questions-count" min="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Har bir yopiq savolda variantlar soni:</label>
+                    <input type="number" id="options-count" min="2" max="6" value="4">
+                </div>
+
+                <button class="btn btn-primary" onclick="createTest()">Test yaratish</button>
+
+                <div id="answers-section" class="hidden">
+                    <h3>Javoblarni kiriting:</h3>
+                    <div id="answers-form"></div>
+                    <button class="btn btn-success" onclick="saveAnswers()">Javoblarni saqlash</button>
+                </div>
+            </div>
+
+            <!-- Student Panel -->
+            <div id="student-tab" class="tab-content">
+                <h2>📝 Test Topshirish</h2>
+
+                <div class="form-group">
+                    <label>Test kodi:</label>
+                    <input type="text" id="student-test-code" placeholder="Test kodini kiriting">
+                </div>
+
+                <div class="form-group">
+                    <label>Ism Familiya:</label>
+                    <input type="text" id="student-name" placeholder="Ism familiyangizni kiriting">
+                </div>
+
+                <button class="btn btn-primary" onclick="startTest()">Testni boshlash</button>
+
+                <div id="test-section" class="hidden">
+                    <h3>Test savollari:</h3>
+                    <div id="test-form"></div>
+                    <button class="btn btn-success" onclick="submitTest()">Testni yakunlash</button>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div id="results-tab" class="tab-content">
+                <h2>📊 Natijalar</h2>
+
+                <div class="form-group">
+                    <label>Test kodi:</label>
+                    <input type="text" id="results-test-code" placeholder="Test kodini kiriting">
+                    <button class="btn btn-primary" onclick="loadResults()">Natijalarni yuklash</button>
+                </div>
+
+                <div id="results-section"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let telegramId = null;
+        let userRole = 'student';
+        let currentTest = null;
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        // Telegram Web App initialization
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
+        }
+
+        function initializeApp() {
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            userRole = urlParams.get('role') || 'student';
+            telegramId = urlParams.get('telegram_id');
+
+            // Update UI
+            updateUserInfo();
+
+            if (userRole === 'admin') {
+                checkAdminAccess();
+            } else {
+                setupStudentInterface();
+            }
+        }
+
+        function updateUserInfo() {
+            const roleInfo = document.getElementById('role-info');
+            const userInfo = document.getElementById('user-info');
+
+            if (userRole === 'admin') {
+                roleInfo.textContent = '👑 Admin Panel';
+                userInfo.innerHTML = `🆔 Admin ID: ${telegramId}`;
+            } else {
+                roleInfo.textContent = '📝 Test Topshirish';
+                userInfo.innerHTML = `🆔 Foydalanuvchi ID: ${telegramId}`;
+            }
+        }
+
+        async function checkAdminAccess() {
+            try {
+                const response = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.is_admin) {
+                    setupAdminInterface();
+                } else {
+                    showAccessDenied();
+                }
+            } catch (error) {
+                console.error('Admin check error:', error);
+                showAccessDenied();
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
+
+        function setupAdminInterface() {
+            const tabsContainer = document.getElementById('tabs-container');
+            tabsContainer.innerHTML = `
+                <button class="tab-btn active" onclick="showTab('admin')">Test Yaratish</button>
+                <button class="tab-btn" onclick="showTab('student')">Test Ko'rish</button>
+                <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+            `;
+
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('admin-tab').classList.add('active');
+        }
+
+        function setupStudentInterface() {
+            const tabsContainer = document.getElementById('tabs-container');
+            tabsContainer.innerHTML = `
+                <button class="tab-btn active" onclick="showTab('student')">Test Topshirish</button>
+            `;
+
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('student-tab').classList.add('active');
+            document.getElementById('loading').classList.add('hidden');
+        }
+
+        function showAccessDenied() {
+            document.getElementById('access-denied').classList.remove('hidden');
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Admin: Create test
+        async function createTest() {
+            const testCode = document.getElementById('admin-test-code').value.trim();
+            const testTitle = document.getElementById('admin-test-title').value.trim();
+            const openCount = parseInt(document.getElementById('open-questions-count').value);
+            const closedCount = parseInt(document.getElementById('closed-questions-count').value);
+            const optionsCount = parseInt(document.getElementById('options-count').value);
+
+            if (!testCode || !testTitle || (openCount === 0 && closedCount === 0)) {
+                showMessage('Barcha maydonlarni to\'ldiring va kamida bitta savol turi kerak!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/create-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId,
+                        code: testCode,
+                        title: testTitle,
+                        open_questions_count: openCount,
+                        closed_questions_count: closedCount,
+                        options_count: optionsCount
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentTest = data.test;
+                    createAnswersForm(openCount, closedCount, optionsCount);
+                    document.getElementById('answers-section').classList.remove('hidden');
+                    showMessage('Test yaratildi! Endi javoblarni kiriting.', 'success');
+                } else {
+                    showMessage(data.error || 'Test yaratishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Create test error:', error);
+                showMessage('Server bilan bog\'lanishda xatolik', 'error');
+            }
+        }
+
+        // Create answers form
+        function createAnswersForm(openCount, closedCount, optionsCount) {
+            const form = document.getElementById('answers-form');
+            form.innerHTML = '';
+
+            // Open questions
+            for (let i = 1; i <= openCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <label>Ochiq savol ${i} - To'g'ri javob:</label>
+                    <input type="text" id="open-${i}" class="answer-input" placeholder="To'g'ri javobni kiriting">
+                `;
+                form.appendChild(div);
+            }
+
+            // Closed questions
+            for (let i = 1; i <= closedCount; i++) {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <label>Yopiq savol ${i} - To'g'ri javob:</label>
+                    <select id="closed-${i}" class="answer-input">
+                        ${Array.from({length: optionsCount}, (_, j) =>
+                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
+                        ).join('')}
+                    </select>
+                `;
+                form.appendChild(div);
+            }
+        }
+
+        // Save answers
+        async function saveAnswers() {
+            const testCode = document.getElementById('admin-test-code').value.trim();
+            const openCount = parseInt(document.getElementById('open-questions-count').value);
+            const closedCount = parseInt(document.getElementById('closed-questions-count').value);
+
+            const answers = {};
+
+            // Collect open answers
+            for (let i = 1; i <= openCount; i++) {
+                const answer = document.getElementById(`open-${i}`).value.trim();
+                if (answer) {
+                    answers[`open-${i}`] = answer;
+                }
+            }
+
+            // Collect closed answers
+            for (let i = 1; i <= closedCount; i++) {
+                const answer = document.getElementById(`closed-${i}`).value;
+                answers[`closed-${i}`] = answer;
+            }
+
+            try {
+                const response = await fetch('/api/save-answers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId,
+                        test_code: testCode,
+                        answers: answers
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage('Javoblar muvaffaqiyatli saqlandi!', 'success');
+                } else {
+                    showMessage(data.error || 'Javoblarni saqlashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Save answers error:', error);
+                showMessage('Server bilan bog\'lanishda xatolik', 'error');
+            }
+        }
+
+        // Student: Start test
+        async function startTest() {
+            const testCode = document.getElementById('student-test-code').value.trim();
+            const studentName = document.getElementById('student-name').value.trim();
+
+            if (!testCode || !studentName) {
+                showMessage('Test kodi va ism-familiya kerak!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/get-test?code=${testCode}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentTest = data.test;
+                    createTestForm(data.test);
+                    document.getElementById('test-section').classList.remove('hidden');
+                    showMessage('Test boshlandi!', 'success');
+                } else {
+                    showMessage('Test topilmadi!', 'error');
+                }
+            } catch (error) {
+                console.error('Start test error:', error);
+                showMessage('Server bilan bog\'lanishda xatolik', 'error');
+            }
+        }
+
+        // Create test form for student
+        function createTestForm(test) {
+            const form = document.getElementById('test-form');
+            form.innerHTML = '';
+
+            // Open questions
+            for (let i = 1; i <= test.open_questions_count; i++) {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <label>Ochiq savol ${i}:</label>
+                    <input type="text" id="student-open-${i}" class="answer-input" placeholder="Javobingizni kiriting">
+                `;
+                form.appendChild(div);
+            }
+
+            // Closed questions
+            for (let i = 1; i <= test.closed_questions_count; i++) {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.innerHTML = `
+                    <label>Yopiq savol ${i}:</label>
+                    <select id="student-closed-${i}" class="answer-input">
+                        <option value="">Javobni tanlang</option>
+                        ${Array.from({length: test.options_count}, (_, j) =>
+                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
+                        ).join('')}
+                    </select>
+                `;
+                form.appendChild(div);
+            }
+        }
+
+        // Submit test
+        async function submitTest() {
+            const testCode = document.getElementById('student-test-code').value.trim();
+            const studentName = document.getElementById('student-name').value.trim();
+
+            if (!currentTest) {
+                showMessage('Test ma\'lumotlari topilmadi!', 'error');
+                return;
+            }
+
+            const answers = {};
+
+            // Collect open answers
+            for (let i = 1; i <= currentTest.open_questions_count; i++) {
+                const answer = document.getElementById(`student-open-${i}`).value.trim();
+                answers[`open-${i}`] = answer;
+            }
+
+            // Collect closed answers
+            for (let i = 1; i <= currentTest.closed_questions_count; i++) {
+                const answer = document.getElementById(`student-closed-${i}`).value;
+                answers[`closed-${i}`] = answer;
+            }
+
+            try {
+                const response = await fetch('/api/submit-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId,
+                        full_name: studentName,
+                        test_code: testCode,
+                        answers: answers
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage(`Test yakunlandi!\nNatija: ${data.score}/${data.total} (${data.percentage}%)`, 'success');
+                } else {
+                    showMessage(data.error || 'Test yakunlashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Submit test error:', error);
+                showMessage('Server bilan bog\'lanishda xatolik', 'error');
+            }
+        }
+
+        // Load results
+        async function loadResults() {
+            const testCode = document.getElementById('results-test-code').value.trim();
+
+            if (!testCode) {
+                showMessage('Test kodi kerak!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/get-results?code=${testCode}&telegram_id=${telegramId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayResults(data.results, testCode);
+                } else {
+                    showMessage(data.error || 'Natijalarni yuklashda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Load results error:', error);
+                showMessage('Server bilan bog\'lanishda xatolik', 'error');
+            }
+        }
+
+        // Display results
+        function displayResults(results, testCode) {
+            const resultsSection = document.getElementById('results-section');
+
+            if (results.length === 0) {
+                resultsSection.innerHTML = '<p>Hali hech kim test topshirmagan.</p>';
+                return;
+            }
+
+            let html = '<h3>Test natijalari:</h3>';
+
+            results.forEach(result => {
+                html += `
+                    <div class="result-item">
+                        <h4>${result.full_name}</h4>
+                        <div class="score">Natija: ${result.score}/${result.total_questions} (${result.percentage}%)</div>
+                        <p>ID: ${result.telegram_id}</p>
+                        <p>Boshlangan: ${new Date(result.started_at).toLocaleString('uz-UZ')}</p>
+                        <p>Tugatilgan: ${new Date(result.completed_at).toLocaleString('uz-UZ')}</p>
+                    </div>
+                `;
+            });
+
+            html += `<button class="export-btn" onclick="exportResults('${testCode}')">Excel ga export qilish</button>`;
+
+            resultsSection.innerHTML = html;
+        }
+
+        // Export results
+        async function exportResults(testCode) {
+            try {
+                const response = await fetch(`/api/export-results?code=${testCode}&telegram_id=${telegramId}`);
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `test_${testCode}_results.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    showMessage('Natijalar yuklab olindi!', 'success');
+                } else {
+                    showMessage('Export qilishda xatolik', 'error');
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                showMessage('Export qilishda xatolik', 'error');
+            }
+        }
+
+        // Show message
+        function showMessage(message, type) {
+            const className = type === 'success' ? 'success-msg' : 'error-msg';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = className;
+            messageDiv.textContent = message;
+
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                if (document.body.contains(messageDiv)) {
+                    document.body.removeChild(messageDiv);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
