@@ -1,26 +1,42 @@
-module.exports = function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+const { createTest, isAdmin } = require('./database');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { telegram_id, code, title } = req.body;
+  try {
+    const {
+      telegram_id,
+      code,
+      title,
+      open_questions_count,
+      closed_questions_count,
+      options_count
+    } = req.body;
 
-  // Check if admin (your ID: 973358587)
-  if (telegram_id != 973358587) {
-    return res.status(403).json({ error: 'Admin huquqlari kerak' });
+    // Admin ekanligini tekshirish
+    const isAdminUser = await isAdmin(telegram_id);
+    if (!isAdminUser) {
+      return res.status(403).json({ error: 'Admin huquqlari kerak' });
+    }
+
+    const test = await createTest(
+      code,
+      title,
+      telegram_id,
+      open_questions_count,
+      closed_questions_count,
+      options_count
+    );
+
+    if (test) {
+      res.json({ success: true, test });
+    } else {
+      res.status(400).json({ error: 'Test yaratishda xatolik' });
+    }
+  } catch (error) {
+    console.error('Create test error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
   }
-
-  res.json({
-    success: true,
-    test: { id: Date.now(), code, title },
-    message: 'Test yaratildi'
-  });
-};
+}

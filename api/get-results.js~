@@ -1,4 +1,4 @@
-const { getStatistics, isAdmin } = require('./database');
+const { getStudentResults, isAdmin } = require('./database');
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -6,10 +6,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { telegram_id } = req.query;
+    const { code, telegram_id } = req.query;
 
-    if (!telegram_id) {
-      return res.status(400).json({ error: 'Telegram ID kerak' });
+    if (!code || !telegram_id) {
+      return res.status(400).json({ error: 'Test kodi va Telegram ID kerak' });
     }
 
     // Admin ekanligini tekshirish
@@ -18,15 +18,11 @@ export default async function handler(req, res) {
       return res.status(403).json({ error: 'Admin huquqlari kerak' });
     }
 
-    const stats = await getStatistics();
+    const results = await getStudentResults(code);
 
-    res.json({
-      success: true,
-      statistics: stats,
-      message: 'Statistika olindi'
-    });
+    res.json({ success: true, results });
   } catch (error) {
-    console.error('Get statistics error:', error);
+    console.error('Get results error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 }
