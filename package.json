@@ -1,6 +1,7 @@
 {
   "name": "test-bot-web",
   "version": "2.1.0",
+  "type": "module",
   "scripts": {
     "build": "echo 'Build complete'"
   },
