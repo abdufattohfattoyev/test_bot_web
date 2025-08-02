@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Tizimi</title>
+    <title>Test Bot - АБДУФАТТОҲ ФАТТОЕВ</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -13,82 +13,72 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            padding: 20px;
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            padding: 30px;
             text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            border-radius: 12px;
         }
 
         .header h1 {
-            font-size: 2rem;
+            color: var(--tg-theme-text-color, #000);
             margin-bottom: 10px;
+            font-size: 24px;
         }
 
-        .user-info {
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 15px;
+        .header p {
+            color: var(--tg-theme-hint-color, #999);
             font-size: 14px;
         }
 
-        .tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .tab-btn {
-            flex: 1;
+        .user-info {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
             padding: 15px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            background: white;
-            color: #4facfe;
-            border-bottom: 3px solid #4facfe;
-        }
-
-        .tab-content {
+            border-radius: 8px;
+            margin-bottom: 20px;
             display: none;
-            padding: 30px;
         }
 
-        .tab-content.active {
-            display: block;
+        .section {
+            background: var(--tg-theme-secondary-bg-color, #ffffff);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: var(--tg-theme-text-color, #000);
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--tg-theme-text-color, #000);
         }
 
         .form-group input,
@@ -96,969 +86,737 @@
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 8px;
+            background: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
             font-size: 16px;
-            transition: border-color 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #4facfe;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
         }
 
         .btn {
-            padding: 12px 24px;
+            background: var(--tg-theme-button-color, #007bff);
+            color: var(--tg-theme-button-text-color, #ffffff);
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
-            margin: 5px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #fa4b99 0%, #ff6b6b 100%);
-            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: var(--tg-theme-hint-color, #6c757d);
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .questions-container {
+            margin-top: 20px;
         }
 
         .question-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #4facfe;
-        }
-
-        .answer-input {
-            background: #fff;
-            border: 2px solid #e9ecef;
+            background: var(--tg-theme-bg-color, #fff);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
             border-radius: 8px;
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
-        }
-
-        .result-item {
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .score {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #28a745;
+        .question-header {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--tg-theme-text-color, #000);
         }
 
-        .export-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
+        .options-container {
+            display: grid;
+            gap: 8px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .option-item:hover {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+        }
+
+        .option-item.selected {
+            background: var(--tg-theme-button-color, #007bff);
+            color: white;
+            border-color: var(--tg-theme-button-color, #007bff);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--tg-theme-hint-color, #ddd);
+        }
+
+        .results-table th {
+            background: var(--tg-theme-secondary-bg-color, #f8f9fa);
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--tg-theme-hint-color, #999);
         }
 
         .hidden {
             display: none;
         }
 
-        .success-msg {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border: 1px solid #c3e6cb;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
         }
 
-        .error-msg {
-            background: #f8d7da;
-            color: #721c24;
+        .stat-card {
+            background: var(--tg-theme-bg-color, #fff);
+            border: 1px solid var(--tg-theme-hint-color, #ddd);
+            border-radius: 8px;
             padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border: 1px solid #f5c6cb;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color, #007bff);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #999);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .section {
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <h1>🎯 Test Tizimi</h1>
-            <p id="role-info">Test yaratish va topshirish</p>
-            <div class="user-info" id="user-info"></div>
+            <h1>🎓 Test Bot</h1>
+            <p>АБДУФАТТОҲ ФАТТОЕВ tomonidan</p>
         </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
-            <button class="tab-btn" onclick="showTab('student')">Test Topshirish</button>
-            <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+        <!-- User Info -->
+        <div class="user-info" id="userInfo">
+            <div id="userDetails"></div>
         </div>
 
-        <!-- Admin Panel -->
-        <div id="admin-tab" class="tab-content active">
-            <h2>🔧 Admin Panel</h2>
-            
-            <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="admin-test-code" placeholder="Masalan: TEST001">
-            </div>
-            
-            <div class="form-group">
-                <label>Test nomi:</label>
-                <input type="text" id="admin-test-title" placeholder="Test nomini kiriting">
-            </div>
-            
-            <div class="form-group">
-                <label>Ochiq savollar soni:</label>
-                <input type="number" id="open-questions-count" min="0" value="0">
-            </div>
-            
-            <div class="form-group">
-                <label>Yopiq savollar soni:</label>
-                <input type="number" id="closed-questions-count" min="0" value="0">
-            </div>
-            
-            <div class="form-group">
-                <label>Har bir yopiq savolda variantlar soni:</label>
-                <input type="number" id="options-count" min="2" max="6" value="4">
-            </div>
-            
-            <button class="btn btn-primary" onclick="createTest()">Test yaratish</button>
-            <button class="btn btn-danger" onclick="debugStorage()">Debug Storage</button>
-            
-            <div id="answers-section" class="hidden">
-                <h3>Javoblarni kiriting:</h3>
-                <div id="answers-form"></div>
-                <button class="btn btn-success" onclick="saveAnswers()">Javoblarni saqlash</button>
-            </div>
-        </div>
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
 
-        <!-- Student Panel -->
-        <div id="student-tab" class="tab-content">
+        <!-- Student Section -->
+        <div class="section" id="studentSection">
             <h2>📝 Test Topshirish</h2>
-            
-            <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="student-test-code" placeholder="Test kodini kiriting">
+
+            <!-- Test Code Input -->
+            <div id="testCodeForm">
+                <div class="form-group">
+                    <label for="testCode">Test Kodini Kiriting:</label>
+                    <input type="text" id="testCode" placeholder="Masalan: TEST001" />
+                </div>
+                <div class="form-group">
+                    <label for="studentName">Ism-Familiyangiz:</label>
+                    <input type="text" id="studentName" placeholder="To'liq ismingizni kiriting" />
+                </div>
+                <button class="btn" onclick="loadTest()">Test Yuklash</button>
             </div>
-            
-            <div class="form-group">
-                <label>Ism Familiya:</label>
-                <input type="text" id="student-name" placeholder="Ism familiyangizni kiriting">
+
+            <!-- Test Taking -->
+            <div id="testTaking" class="hidden">
+                <div id="testInfo"></div>
+                <div id="questionsContainer" class="questions-container"></div>
+                <button class="btn btn-success" onclick="submitTest()">Test Topshirish</button>
             </div>
-            
-            <button class="btn btn-primary" onclick="startTest()">Testni boshlash</button>
-            
-            <div id="test-section" class="hidden">
-                <h3>Test savollari:</h3>
-                <div id="test-form"></div>
-                <button class="btn btn-success" onclick="submitTest()">Testni yakunlash</button>
+
+            <!-- Test Results -->
+            <div id="testResults" class="hidden">
+                <h3>🎉 Natijangiz:</h3>
+                <div id="resultDetails"></div>
             </div>
         </div>
 
-        <!-- Results Panel -->
-        <div id="results-tab" class="tab-content">
-            <h2>📊 Natijalar</h2>
-            
-            <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="results-test-code" placeholder="Test kodini kiriting">
-                <button class="btn btn-primary" onclick="loadResults()">Natijalarni yuklash</button>
+        <!-- Admin Section -->
+        <div class="section hidden" id="adminSection">
+            <h2>👑 Admin Panel</h2>
+
+            <!-- Admin Menu -->
+            <div id="adminMenu">
+                <button class="btn" onclick="showCreateTest()">🆕 Yangi Test Yaratish</button>
+                <button class="btn btn-secondary" onclick="showAddAnswers()">✅ Javoblar Kiritish</button>
+                <button class="btn btn-secondary" onclick="showResults()">📊 Natijalarni Ko'rish</button>
+                <button class="btn btn-secondary" onclick="showStatistics()">📈 Statistika</button>
             </div>
-            
-            <div id="results-section"></div>
+
+            <!-- Create Test Form -->
+            <div id="createTestForm" class="hidden">
+                <h3>Yangi Test Yaratish</h3>
+                <div class="form-group">
+                    <label for="newTestCode">Test Kodi:</label>
+                    <input type="text" id="newTestCode" placeholder="TEST001" />
+                </div>
+                <div class="form-group">
+                    <label for="testTitle">Test Nomi:</label>
+                    <input type="text" id="testTitle" placeholder="Matematika Testi" />
+                </div>
+                <div class="form-group">
+                    <label for="openQuestions">Ochiq Savollar Soni:</label>
+                    <input type="number" id="openQuestions" value="5" min="0" />
+                </div>
+                <div class="form-group">
+                    <label for="closedQuestions">Yopiq Savollar Soni:</label>
+                    <input type="number" id="closedQuestions" value="10" min="0" />
+                </div>
+                <div class="form-group">
+                    <label for="optionsCount">Variantlar Soni:</label>
+                    <select id="optionsCount">
+                        <option value="2">2 ta</option>
+                        <option value="3">3 ta</option>
+                        <option value="4" selected>4 ta</option>
+                        <option value="5">5 ta</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="createTest()">Test Yaratish</button>
+                <button class="btn btn-secondary" onclick="showAdminMenu()">Bekor qilish</button>
+            </div>
+
+            <!-- Add Answers Form -->
+            <div id="addAnswersForm" class="hidden">
+                <h3>Javoblar Kiritish</h3>
+                <div class="form-group">
+                    <label for="answersTestCode">Test Kodi:</label>
+                    <input type="text" id="answersTestCode" placeholder="TEST001" />
+                </div>
+                <button class="btn" onclick="loadTestForAnswers()">Test Yuklash</button>
+                <div id="answersContainer" class="hidden">
+                    <!-- Answers will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Results View -->
+            <div id="resultsView" class="hidden">
+                <h3>Test Natijalari</h3>
+                <div class="form-group">
+                    <label for="resultsTestCode">Test Kodi:</label>
+                    <input type="text" id="resultsTestCode" placeholder="TEST001" />
+                </div>
+                <button class="btn" onclick="loadResults()">Natijalarni Yuklash</button>
+                <button class="btn btn-secondary" onclick="exportResults()">CSV Yuklab Olish</button>
+                <div id="resultsContainer"></div>
+            </div>
+
+            <!-- Statistics -->
+            <div id="statisticsView" class="hidden">
+                <h3>📈 Umumiy Statistika</h3>
+                <div id="statisticsContainer">
+                    <div class="loading">Statistika yuklanmoqda...</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         // Global variables
-        let telegramId = null;
-        let userRole = 'student';
-        let currentTest = null;
+        let tg = window.Telegram.WebApp;
+        let user = null;
         let isAdmin = false;
-        let userData = {};
-
-        // Admin IDs - sizning ID ingiz
-        const ADMIN_IDS = [973358587];
+        let currentTest = null;
+        let answers = {};
 
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
+            tg.ready();
+            tg.expand();
+
+            // Get user info from Telegram
+            if (tg.initDataUnsafe.user) {
+                user = tg.initDataUnsafe.user;
+                initializeApp();
+            } else {
+                // For testing outside Telegram
+                user = {
+                    id: 973358587,
+                    first_name: "АБДУФАТТОҲ",
+                    username: "FATTOYEVABDUFATTOH"
+                };
+                initializeApp();
+            }
         });
 
-        // Telegram Web App initialization
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-        }
+        async function initializeApp() {
+            try {
+                // Save user to database
+                await saveUserToDatabase();
 
-        function initializeApp() {
-            console.log('=== TELEGRAM WEB APP INITIALIZATION ===');
-            
-            let dataSource = 'unknown';
-            
-            // 1. Telegram WebApp dan real ma'lumot olishga harakat
-            if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                const user = window.Telegram.WebApp.initDataUnsafe.user;
-                telegramId = user.id;
-                userData = {
-                    id: user.id,
-                    first_name: user.first_name || 'Telegram User',
-                    last_name: user.last_name || '',
-                    username: user.username || '',
-                    language_code: user.language_code || 'uz'
-                };
-                dataSource = 'telegram_webapp';
-                console.log('✅ Real Telegram WebApp data found:', userData);
-            }
-            
-            // 2. URL parametrlardan olish (bot orqali kelganda - ENG MUHIM!)
-            else {
-                const urlParams = new URLSearchParams(window.location.search);
-                console.log('URL params:', Object.fromEntries(urlParams));
-                
-                if (urlParams.get('telegram_id')) {
-                    // Bot orqali kelgan real foydalanuvchi ma'lumotlari
-                    telegramId = parseInt(urlParams.get('telegram_id'));
-                    userData = {
-                        id: telegramId,
-                        first_name: decodeURIComponent(urlParams.get('first_name') || 'User'),
-                        last_name: decodeURIComponent(urlParams.get('last_name') || ''),
-                        username: urlParams.get('username') || '',
-                        language_code: 'uz'
-                    };
-                    userRole = urlParams.get('role') || 'student';
-                    dataSource = 'bot_url';
-                    console.log('✅ Bot URL data found:', userData);
-                    console.log('This is a REAL USER from Telegram bot!');
+                // Check admin status
+                await checkAdminStatus();
+
+                // Show user info
+                showUserInfo();
+
+                // Show appropriate sections
+                if (isAdmin) {
+                    document.getElementById('adminSection').classList.remove('hidden');
                 }
-                
-                // 3. Fallback - faqat browser dan to'g'ridan-to'g'ri ochganda
-                else {
-                    console.log('⚠️ No URL params - this is direct browser access');
-                    
-                    // Browser dan ochganda demo mode
-                    telegramId = 999999999; // Demo ID
-                    userData = {
-                        id: 999999999,
-                        first_name: 'Demo',
-                        last_name: 'User',
-                        username: 'demo',
-                        language_code: 'uz'
-                    };
-                    userRole = 'student';
-                    dataSource = 'demo';
-                    console.log('🎭 Demo mode active:', userData);
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showAlert('Yuklanishda xatolik yuz berdi', 'error');
+            }
+        }
+
+        async function saveUserToDatabase() {
+            try {
+                const response = await fetch('/api/save-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: user.id,
+                        username: user.username,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        full_name: `${user.first_name} ${user.last_name || ''}`.trim(),
+                        is_admin: false
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to save user');
                 }
+            } catch (error) {
+                console.error('Save user error:', error);
             }
-            
-            // Admin ekanligini tekshirish
-            isAdmin = ADMIN_IDS.includes(telegramId);
-            console.log('Is Admin:', isAdmin, 'ID:', telegramId, 'Role:', userRole);
-            console.log('Data source:', dataSource);
-            
-            // Foydalanuvchini bazaga qo'shish
-            saveUserToDatabase();
-            
-            // UI yangilash
-            updateUserInterface();
-            
-            // Tab setup
-            setupInterface();
-            
-            console.log('=== INITIALIZATION COMPLETE ===');
-            console.log('Final user:', userData);
-            console.log('Data came from:', dataSource);
         }
-        userRole = urlParams.get('role') || 'student';
 
-        function initializeApp() {
-            console.log('=== TELEGRAM WEB APP INITIALIZATION ===');
-            
-            // 1. Telegram WebApp dan real ma'lumot olishga harakat
-            if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                const user = window.Telegram.WebApp.initDataUnsafe.user;
-                telegramId = user.id;
-                userData = {
-                    id: user.id,
-                    first_name: user.first_name || 'Telegram User',
-                    last_name: user.last_name || '',
-                    username: user.username || '',
-                    language_code: user.language_code || 'uz'
-                };
-                console.log('✅ Real Telegram data found:', userData);
-            }
-            
-            // 2. URL parametrlardan olish (bot orqali kelganda)
-            else {
-                const urlParams = new URLSearchParams(window.location.search);
-                console.log('URL params:', Object.fromEntries(urlParams));
-                
-                if (urlParams.get('telegram_id')) {
-                    telegramId = parseInt(urlParams.get('telegram_id'));
-                    userData = {
-                        id: telegramId,
-                        first_name: decodeURIComponent(urlParams.get('first_name') || 'User'),
-                        last_name: decodeURIComponent(urlParams.get('last_name') || ''),
-                        username: urlParams.get('username') || '',
-                        language_code: 'uz'
-                    };
-                    userRole = urlParams.get('role') || 'student';
-                    console.log('✅ URL data found:', userData);
+        async function checkAdminStatus() {
+            try {
+                const response = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: user.id
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    isAdmin = result.is_admin;
                 }
-                
-                // 3. Fallback - browser dan ochsa, unique ID yaratish
-                else {
-                    // Unique ID yaratish (timestamp + random)
-                    telegramId = Date.now() + Math.floor(Math.random() * 1000);
-                    
-                    // Agar localhost yoki test domain bo'lsa, admin qilish
-                    const isLocalhost = window.location.hostname === 'localhost' || 
-                                       window.location.hostname === '127.0.0.1' ||
-                                       window.location.hostname.includes('localhost');
-                    
-                    if (isLocalhost || telegramId === 973358587) {
-                        // Admin uchun test ma'lumot
-                        userData = {
-                            id: 973358587, // Sizning real ID
-                            first_name: 'АБДУФАТТОҲ',
-                            last_name: 'ФАТТОЕВ',
-                            username: 'FATTOYEVABDUFATTOH',
-                            language_code: 'uz'
-                        };
-                        telegramId = 973358587;
-                        userRole = 'admin';
-                        console.log('🔧 Admin test mode active');
-                    } else {
-                        // Random user uchun test ma'lumot
-                        const randomNames = [
-                            'Aziz Karimov', 'Malika Toshmatova', 'Bobur Rashidov', 
-                            'Dilnoza Hamidova', 'Jasur Yusupov', 'Nigora Qosimova'
-                        ];
-                        const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
-                        const [firstName, lastName] = randomName.split(' ');
-                        
-                        userData = {
-                            id: telegramId,
-                            first_name: firstName,
-                            last_name: lastName,
-                            username: 'user' + Math.floor(Math.random() * 1000),
-                            language_code: 'uz'
-                        };
-                        userRole = 'student';
-                        console.log('🎭 Random user generated:', userData);
-                    }
-                }
-            }
-            
-            // Admin ekanligini tekshirish
-            isAdmin = ADMIN_IDS.includes(telegramId);
-            console.log('Is Admin:', isAdmin, 'ID:', telegramId, 'Role:', userRole);
-            
-            // Foydalanuvchini bazaga qo'shish
-            saveUserToDatabase();
-            
-            // UI yangilash
-            updateUserInterface();
-            
-            // Tab setup
-            setupInterface();
-            
-            console.log('=== INITIALIZATION COMPLETE ===');
-            console.log('Final user:', userData);
-        }
-
-        function updateUserInterface() {
-            const fullName = `${userData.first_name} ${userData.last_name}`.trim();
-            const roleText = isAdmin ? 'Admin' : 'Student';
-            const roleEmoji = isAdmin ? '👑' : '👤';
-            
-            document.getElementById('user-info').innerHTML = 
-                `${roleEmoji} ${fullName} | 🆔 ID: ${telegramId} | 🎭 ${roleText}`;
-            
-            // Header title ham yangilash
-            document.getElementById('role-info').textContent = 
-                isAdmin ? '👑 Admin Panel' : '📝 Test Tizimi';
-        }
-
-        function saveUserToDatabase() {
-            if (!telegramId) return;
-
-            // LocalStorage dan mavjud users ma'lumotini olish
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-            
-            // Foydalanuvchi ma'lumotlarini yangilash yoki qo'shish
-            users[telegramId] = {
-                ...userData,
-                last_seen: new Date().toISOString(),
-                is_admin: isAdmin,
-                total_tests: users[telegramId]?.total_tests || 0,
-                first_visit: users[telegramId]?.first_visit || new Date().toISOString()
-            };
-
-            // LocalStorage ga saqlash
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            console.log('User saved to database:', users[telegramId]);
-        }
-
-        function setupInterface() {
-            const tabsContainer = document.querySelector('.tabs');
-            
-            console.log('Setting up interface for:', { isAdmin, userRole, telegramId });
-            
-            if (isAdmin) {
-                // Admin uchun barcha tablar
-                tabsContainer.innerHTML = `
-                    <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
-                    <button class="tab-btn" onclick="showTab('student')">Test Ko'rish</button>
-                    <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
-                `;
-                
-                // Admin panel ni ko'rsatish
-                document.getElementById('admin-tab').classList.add('active');
-                document.getElementById('student-tab').classList.remove('active');
-                document.getElementById('results-tab').classList.remove('active');
-                
-                // Admin panelni ko'rsatish
-                document.getElementById('admin-tab').style.display = 'block';
-                document.getElementById('results-tab').style.display = 'block';
-                
-                console.log('✅ Admin interface setup complete');
-            } else {
-                // Student uchun faqat test topshirish
-                tabsContainer.innerHTML = `
-                    <button class="tab-btn active" onclick="showTab('student')">Test Topshirish</button>
-                    <button class="tab-btn" onclick="showTab('stats')">Statistika</button>
-                `;
-                document.getElementById('admin-tab').classList.remove('active');
-                document.getElementById('student-tab').classList.add('active');
-                document.getElementById('results-tab').classList.remove('active');
-                
-                // Admin panelni yashirish
-                document.getElementById('admin-tab').style.display = 'none';
-                document.getElementById('results-tab').style.display = 'none';
-                
-                // Stats tabini yaratish
-                if (!document.getElementById('stats-tab')) {
-                    const statsTab = document.createElement('div');
-                    statsTab.id = 'stats-tab';
-                    statsTab.className = 'tab-content';
-                    statsTab.innerHTML = `
-                        <h2>📊 Mening Statistikam</h2>
-                        <div id="user-stats"></div>
-                    `;
-                    document.querySelector('.container').appendChild(statsTab);
-                }
-                
-                // User statistikasini ko'rsatish
-                showUserStats();
-                
-                console.log('✅ Student interface setup complete');
+            } catch (error) {
+                console.error('Auth check error:', error);
             }
         }
 
-        // LocalStorage dan ma'lumotlarni olish
-        let testData = JSON.parse(localStorage.getItem('testData') || '{}');
+        function showUserInfo() {
+            const userInfo = document.getElementById('userInfo');
+            const userDetails = document.getElementById('userDetails');
 
-        // Tab switching
-        function showTab(tabName) {
-            // Admin huquqlarini tekshirish
-            if ((tabName === 'admin' || tabName === 'results') && !isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
-                return;
-            }
-            
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(tabName + '-tab').classList.add('active');
-            event.target.classList.add('active');
-            
-            // Agar stats tabini ochsa, yangi ma'lumot ko'rsatish
-            if (tabName === 'stats') {
-                showUserStats();
-            }
-        }
-
-        function showUserStats() {
-            const users = JSON.parse(localStorage.getItem('users') || '{}');
-            const currentUser = users[telegramId];
-            const testData = JSON.parse(localStorage.getItem('testData') || '{}');
-            
-            if (!currentUser) {
-                document.getElementById('user-stats').innerHTML = '<p>Foydalanuvchi ma\'lumotlari topilmadi.</p>';
-                return;
-            }
-
-            // Foydalanuvchi topshirgan testlarni hisoblash
-            let completedTests = 0;
-            let totalScore = 0;
-            let totalQuestions = 0;
-            
-            Object.values(testData).forEach(test => {
-                if (test.students) {
-                    Object.values(test.students).forEach(student => {
-                        if (student.telegramId === telegramId) {
-                            completedTests++;
-                            totalScore += student.score || 0;
-                            totalQuestions += student.total || 0;
-                        }
-                    });
-                }
-            });
-
-            const averagePercentage = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
-
-            const statsHtml = `
-                <div class="result-item">
-                    <h3>👤 Shaxsiy Ma'lumotlar</h3>
-                    <p><strong>Ism:</strong> ${currentUser.first_name} ${currentUser.last_name}</p>
-                    <p><strong>Username:</strong> ${currentUser.username ? '@' + currentUser.username : 'Yo\'q'}</p>
-                    <p><strong>ID:</strong> ${currentUser.id}</p>
-                    <p><strong>Birinchi tashrif:</strong> ${new Date(currentUser.first_visit).toLocaleString('uz-UZ')}</p>
-                    <p><strong>Oxirgi tashrif:</strong> ${new Date(currentUser.last_seen).toLocaleString('uz-UZ')}</p>
-                </div>
-                
-                <div class="result-item">
-                    <h3>📊 Test Statistikasi</h3>
-                    <p><strong>Topshirilgan testlar:</strong> ${completedTests}</p>
-                    <p><strong>Jami to'g'ri javoblar:</strong> ${totalScore}</p>
-                    <p><strong>Jami savollar:</strong> ${totalQuestions}</p>
-                    <p><strong>O'rtacha natija:</strong> ${averagePercentage}%</p>
-                    <div class="score">Umumiy reyting: ${averagePercentage >= 80 ? '🏆 A\'lo' : averagePercentage >= 60 ? '🥈 Yaxshi' : averagePercentage >= 40 ? '🥉 Qoniqarli' : '📚 Yaxshilanishi kerak'}</div>
-                </div>
+            userDetails.innerHTML = `
+                <strong>👤 ${user.first_name} ${user.last_name || ''}</strong><br>
+                <small>ID: ${user.id} ${user.username ? `(@${user.username})` : ''}</small><br>
+                <small>👑 ${isAdmin ? 'Admin' : 'Foydalanuvchi'}</small>
             `;
-            
-            document.getElementById('user-stats').innerHTML = statsHtml;
+
+            userInfo.classList.remove('hidden');
         }
 
-        // Admin: Create test
-        function createTest() {
-            if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
-                return;
-            }
-            
-            const testCode = document.getElementById('admin-test-code').value.trim();
-            const testTitle = document.getElementById('admin-test-title').value.trim();
-            const openCount = parseInt(document.getElementById('open-questions-count').value);
-            const closedCount = parseInt(document.getElementById('closed-questions-count').value);
-            const optionsCount = parseInt(document.getElementById('options-count').value);
-
-            if (!testCode || !testTitle || (openCount === 0 && closedCount === 0)) {
-                showMessage('Barcha maydonlarni to\'ldiring va kamida bitta savol turi kerak!', 'error');
-                return;
-            }
-
-            // Test strukturasini yaratish
-            testData[testCode] = {
-                title: testTitle,
-                openCount: openCount,
-                closedCount: closedCount,
-                optionsCount: optionsCount,
-                answers: {},
-                students: {},
-                createdBy: telegramId,
-                createdAt: new Date().toISOString()
-            };
-
-            localStorage.setItem('testData', JSON.stringify(testData));
-
-            // Javoblar formasini yaratish
-            createAnswersForm(testCode, openCount, closedCount, optionsCount);
-            document.getElementById('answers-section').classList.remove('hidden');
-            showMessage('Test yaratildi! Endi javoblarni kiriting.', 'success');
-        }
-
-        // Create answers form
-        function createAnswersForm(testCode, openCount, closedCount, optionsCount) {
-            const form = document.getElementById('answers-form');
-            form.innerHTML = '';
-
-            // Open questions
-            for (let i = 1; i <= openCount; i++) {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                div.innerHTML = `
-                    <label>Ochiq savol ${i} - To'g'ri javob:</label>
-                    <input type="text" id="open-${i}" class="answer-input" placeholder="To'g'ri javobni kiriting">
-                `;
-                form.appendChild(div);
-            }
-
-            // Closed questions
-            for (let i = 1; i <= closedCount; i++) {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                div.innerHTML = `
-                    <label>Yopiq savol ${i} - To'g'ri javob:</label>
-                    <select id="closed-${i}" class="answer-input">
-                        ${Array.from({length: optionsCount}, (_, j) => 
-                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
-                        ).join('')}
-                    </select>
-                `;
-                form.appendChild(div);
-            }
-        }
-
-        // Save answers
-        function saveAnswers() {
-            if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
-                return;
-            }
-            
-            const testCode = document.getElementById('admin-test-code').value.trim();
-            const testInfo = testData[testCode];
-            
-            if (!testInfo) {
-                showMessage('Test topilmadi!', 'error');
-                return;
-            }
-
-            const answers = {};
-            let emptyCount = 0;
-
-            // Open answers
-            for (let i = 1; i <= testInfo.openCount; i++) {
-                const element = document.getElementById(`open-${i}`);
-                if (element) {
-                    const answer = element.value.trim();
-                    if (answer) {
-                        answers[`open-${i}`] = answer.toLowerCase();
-                    } else {
-                        emptyCount++;
-                    }
-                }
-            }
-
-            // Closed answers
-            for (let i = 1; i <= testInfo.closedCount; i++) {
-                const element = document.getElementById(`closed-${i}`);
-                if (element) {
-                    const answer = element.value;
-                    if (answer) {
-                        answers[`closed-${i}`] = answer;
-                    } else {
-                        emptyCount++;
-                    }
-                }
-            }
-
-            if (emptyCount > 0) {
-                showMessage(`${emptyCount} ta javob kiritilmagan!`, 'error');
-                return;
-            }
-
-            // Save answers
-            testData[testCode].answers = answers;
-            localStorage.setItem('testData', JSON.stringify(testData));
-            
-            // Debug - console da ko'rsatish
-            console.log('Saqlangan testData:', testData);
-            console.log('Javoblar:', answers);
-            
-            showMessage(`Javoblar saqlandi! (${Object.keys(answers).length} ta javob)`, 'success');
-        }
-
-        // Student: Start test
-        function startTest() {
-            const testCode = document.getElementById('student-test-code').value.trim();
-            const studentName = document.getElementById('student-name').value.trim();
+        // Test loading functions
+        async function loadTest() {
+            const testCode = document.getElementById('testCode').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
 
             if (!testCode || !studentName) {
-                showMessage('Test kodi va ism-familiya kerak!', 'error');
+                showAlert('Test kodi va ismingizni kiriting!', 'error');
                 return;
             }
 
-            // LocalStorage dan ma'lumot olish
-            testData = JSON.parse(localStorage.getItem('testData') || '{}');
-            
-            if (!testData[testCode]) {
-                showMessage('Test topilmadi yoki admin javoblarni kiritmagan!', 'error');
-                console.log('Mavjud testlar:', Object.keys(testData));
-                return;
-            }
+            try {
+                const response = await fetch(`/api/get-test?code=${testCode}`);
+                const result = await response.json();
 
-            if (!testData[testCode].answers || Object.keys(testData[testCode].answers).length === 0) {
-                showMessage('Test javoblari kiritilmagan! Admin bilan bog\'laning.', 'error');
-                return;
-            }
-
-            currentTest = testData[testCode];
-            createTestForm(testCode);
-            document.getElementById('test-section').classList.remove('hidden');
-            showMessage('Test boshlandi!', 'success');
-        }
-
-        // Create test form for student
-        function createTestForm(testCode) {
-            const test = testData[testCode];
-            const form = document.getElementById('test-form');
-            form.innerHTML = '';
-
-            // Open questions
-            for (let i = 1; i <= test.openCount; i++) {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                div.innerHTML = `
-                    <label>Ochiq savol ${i}:</label>
-                    <input type="text" id="student-open-${i}" class="answer-input" placeholder="Javobingizni kiriting">
-                `;
-                form.appendChild(div);
-            }
-
-            // Closed questions
-            for (let i = 1; i <= test.closedCount; i++) {
-                const div = document.createElement('div');
-                div.className = 'question-item';
-                div.innerHTML = `
-                    <label>Yopiq savol ${i}:</label>
-                    <select id="student-closed-${i}" class="answer-input">
-                        <option value="">Javobni tanlang</option>
-                        ${Array.from({length: test.optionsCount}, (_, j) => 
-                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
-                        ).join('')}
-                    </select>
-                `;
-                form.appendChild(div);
-            }
-        }
-
-        // Submit test
-        function submitTest() {
-            const testCode = document.getElementById('student-test-code').value.trim();
-            const studentName = document.getElementById('student-name').value.trim();
-
-            if (!currentTest) {
-                showMessage('Test ma\'lumotlari topilmadi!', 'error');
-                return;
-            }
-
-            const answers = {};
-            let score = 0;
-            let totalQuestions = currentTest.openCount + currentTest.closedCount;
-
-            // Collect and check open answers
-            for (let i = 1; i <= currentTest.openCount; i++) {
-                const studentAnswer = document.getElementById(`student-open-${i}`).value.trim().toLowerCase();
-                const correctAnswer = currentTest.answers[`open-${i}`];
-                
-                answers[`open-${i}`] = studentAnswer;
-                
-                if (correctAnswer && studentAnswer === correctAnswer) {
-                    score++;
+                if (result.success) {
+                    currentTest = result.test;
+                    answers = {};
+                    showTestTaking();
+                    generateQuestions();
+                } else {
+                    showAlert('Test topilmadi!', 'error');
                 }
+            } catch (error) {
+                console.error('Load test error:', error);
+                showAlert('Test yuklashda xatolik!', 'error');
+            }
+        }
+
+        function showTestTaking() {
+            document.getElementById('testCodeForm').classList.add('hidden');
+            document.getElementById('testTaking').classList.remove('hidden');
+
+            document.getElementById('testInfo').innerHTML = `
+                <h3>📝 ${currentTest.title}</h3>
+                <p>Ochiq savollar: ${currentTest.open_questions_count}</p>
+                <p>Yopiq savollar: ${currentTest.closed_questions_count}</p>
+                <hr style="margin: 15px 0;">
+            `;
+        }
+
+        function generateQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            // Generate open questions
+            for (let i = 1; i <= currentTest.open_questions_count; i++) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+                questionDiv.innerHTML = `
+                    <div class="question-header">Ochiq savol ${i}:</div>
+                    <textarea
+                        id="open-${i}"
+                        placeholder="Javobingizni yozing..."
+                        onchange="saveAnswer('open-${i}', this.value)"
+                    ></textarea>
+                `;
+                container.appendChild(questionDiv);
             }
 
-            // Collect and check closed answers
-            for (let i = 1; i <= currentTest.closedCount; i++) {
-                const studentAnswer = document.getElementById(`student-closed-${i}`).value;
-                const correctAnswer = currentTest.answers[`closed-${i}`];
-                
-                answers[`closed-${i}`] = studentAnswer;
-                
-                if (studentAnswer === correctAnswer) {
-                    score++;
+            // Generate closed questions
+            for (let i = 1; i <= currentTest.closed_questions_count; i++) {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-item';
+
+                let optionsHTML = '';
+                const letters = ['A', 'B', 'C', 'D', 'E'];
+
+                for (let j = 0; j < currentTest.options_count; j++) {
+                    optionsHTML += `
+                        <div class="option-item" onclick="selectOption('closed-${i}', '${letters[j]}')">
+                            <input type="radio" name="closed-${i}" value="${letters[j]}" id="closed-${i}-${letters[j]}">
+                            <label for="closed-${i}-${letters[j]}">${letters[j]}</label>
+                        </div>
+                    `;
                 }
-            }
 
-            // Save student result
-            if (!testData[testCode].students) {
-                testData[testCode].students = {};
-            }
-
-            testData[testCode].students[studentName] = {
-                answers: answers,
-                score: score,
-                total: totalQuestions,
-                percentage: Math.round((score / totalQuestions) * 100),
-                telegramId: telegramId,
-                timestamp: new Date().toLocaleString('uz-UZ')
-            };
-
-            localStorage.setItem('testData', JSON.stringify(testData));
-
-            // Foydalanuvchi test sonini yangilash
-            updateUserTestCount();
-
-            showMessage(`Test yakunlandi!\nNatija: ${score}/${totalQuestions} (${Math.round((score / totalQuestions) * 100)}%)`, 'success');
-        }
-
-        function updateUserTestCount() {
-            let users = JSON.parse(localStorage.getItem('users') || '{}');
-            if (users[telegramId]) {
-                users[telegramId].total_tests = (users[telegramId].total_tests || 0) + 1;
-                users[telegramId].last_seen = new Date().toISOString();
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-        }
-
-        // Load results
-        function loadResults() {
-            if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
-                return;
-            }
-            
-            const testCode = document.getElementById('results-test-code').value.trim();
-            
-            if (!testCode) {
-                showMessage('Test kodi kerak!', 'error');
-                return;
-            }
-
-            // LocalStorage dan yangi ma'lumot olish
-            testData = JSON.parse(localStorage.getItem('testData') || '{}');
-            
-            if (!testData[testCode]) {
-                showMessage('Test topilmadi!', 'error');
-                return;
-            }
-
-            const testInfo = testData[testCode];
-            const students = testInfo.students || {};
-            const resultsSection = document.getElementById('results-section');
-
-            if (Object.keys(students).length === 0) {
-                resultsSection.innerHTML = '<p>Hali hech kim test topshirmagan.</p>';
-                return;
-            }
-
-            let html = `<h3>${testInfo.title} - Test natijalari:</h3>`;
-            
-            Object.entries(students).forEach(([name, data]) => {
-                html += `
-                    <div class="result-item">
-                        <h4>${name}</h4>
-                        <div class="score">Natija: ${data.score}/${data.total} (${data.percentage}%)</div>
-                        <p>ID: ${data.telegramId}</p>
-                        <p>Vaqt: ${data.timestamp}</p>
+                questionDiv.innerHTML = `
+                    <div class="question-header">Yopiq savol ${i}:</div>
+                    <div class="options-container">
+                        ${optionsHTML}
                     </div>
                 `;
-            });
-
-            html += `<button class="export-btn" onclick="exportResults('${testCode}')">Excel ga export qilish</button>`;
-            
-            resultsSection.innerHTML = html;
+                container.appendChild(questionDiv);
+            }
         }
 
-        // Export results
-        function exportResults(testCode) {
-            const testInfo = testData[testCode];
-            const students = testInfo.students || {};
-
-            let csv = 'Ism Familiya,Telegram ID,To\'g\'ri javoblar,Umumiy savollar,Foiz,Vaqt\n';
-            
-            Object.entries(students).forEach(([name, data]) => {
-                csv += `"${name}",${data.telegramId},${data.score},${data.total},${data.percentage}%,"${data.timestamp}"\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            
-            link.setAttribute('href', url);
-            link.setAttribute('download', `test_${testCode}_results.csv`);
-            link.style.visibility = 'hidden';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            showMessage('Natijalar yuklab olindi!', 'success');
+        function saveAnswer(questionId, value) {
+            answers[questionId] = value;
         }
 
-        // Show message
-        function showMessage(message, type) {
-            const className = type === 'success' ? 'success-msg' : 'error-msg';
-            const messageDiv = document.createElement('div');
-            messageDiv.className = className;
-            messageDiv.textContent = message;
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                if (document.body.contains(messageDiv)) {
-                    document.body.removeChild(messageDiv);
+        function selectOption(questionId, value) {
+            answers[questionId] = value;
+
+            // Update UI
+            const options = document.querySelectorAll(`input[name="${questionId}"]`);
+            options.forEach(option => {
+                const parent = option.closest('.option-item');
+                if (option.value === value) {
+                    option.checked = true;
+                    parent.classList.add('selected');
+                } else {
+                    option.checked = false;
+                    parent.classList.remove('selected');
                 }
+            });
+        }
+
+        async function submitTest() {
+            const studentName = document.getElementById('studentName').value.trim();
+
+            if (Object.keys(answers).length === 0) {
+                showAlert('Hech bo\'lmaganda bitta savolga javob bering!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/submit-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: user.id,
+                        full_name: studentName,
+                        test_code: currentTest.code,
+                        answers: answers
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showTestResults(result);
+                } else {
+                    showAlert('Test topshirishda xatolik!', 'error');
+                }
+            } catch (error) {
+                console.error('Submit test error:', error);
+                showAlert('Test topshirishda xatolik!', 'error');
+            }
+        }
+
+        function showTestResults(result) {
+            document.getElementById('testTaking').classList.add('hidden');
+            document.getElementById('testResults').classList.remove('hidden');
+
+            document.getElementById('resultDetails').innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${result.score}</div>
+                        <div class="stat-label">To'g'ri javoblar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${result.total}</div>
+                        <div class="stat-label">Jami savollar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${result.percentage}%</div>
+                        <div class="stat-label">Natija</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="restartTest()">Yana Test Topshirish</button>
+                </div>
+            `;
+        }
+
+        function restartTest() {
+            document.getElementById('testResults').classList.add('hidden');
+            document.getElementById('testCodeForm').classList.remove('hidden');
+            document.getElementById('testCode').value = '';
+            document.getElementById('studentName').value = '';
+            currentTest = null;
+            answers = {};
+        }
+
+        // Admin functions
+        function showAdminMenu() {
+            hideAllAdminSections();
+            document.getElementById('adminMenu').classList.remove('hidden');
+        }
+
+        function showCreateTest() {
+            hideAllAdminSections();
+            document.getElementById('createTestForm').classList.remove('hidden');
+        }
+
+        function showAddAnswers() {
+            hideAllAdminSections();
+            document.getElementById('addAnswersForm').classList.remove('hidden');
+        }
+
+        function showResults() {
+            hideAllAdminSections();
+            document.getElementById('resultsView').classList.remove('hidden');
+        }
+
+        function showStatistics() {
+            hideAllAdminSections();
+            document.getElementById('statisticsView').classList.remove('hidden');
+            loadStatistics();
+        }
+
+        function hideAllAdminSections() {
+            const sections = ['adminMenu', 'createTestForm', 'addAnswersForm', 'resultsView', 'statisticsView'];
+            sections.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+        }
+
+        async function createTest() {
+            const code = document.getElementById('newTestCode').value.trim();
+            const title = document.getElementById('testTitle').value.trim();
+            const openCount = parseInt(document.getElementById('openQuestions').value);
+            const closedCount = parseInt(document.getElementById('closedQuestions').value);
+            const optionsCount = parseInt(document.getElementById('optionsCount').value);
+
+            if (!code || !title) {
+                showAlert('Test kodi va nomini kiriting!', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/create-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        telegram_id: user.id,
+                        code: code,
+                        title: title,
+                        open_questions_count: openCount,
+                        closed_questions_count: closedCount,
+                        options_count: optionsCount
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('Test muvaffaqiyatli yaratildi!', 'success');
+                    showAdminMenu();
+                    // Clear form
+                    document.getElementById('newTestCode').value = '';
+                    document.getElementById('testTitle').value = '';
+                } else {
+                    showAlert('Test yaratishda xatolik!', 'error');
+                }
+            } catch (error) {
+                console.error('Create test error:', error);
+                showAlert('Test yaratishda xatolik!', 'error');
+            }
+        }
+
+        async function loadStatistics() {
+            try {
+                const response = await fetch(`/api/statistics?telegram_id=${user.id}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const stats = result.statistics;
+                    document.getElementById('statisticsContainer').innerHTML = `
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">${stats.total_users}</div>
+                                <div class="stat-label">Jami Foydalanuvchilar</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${stats.total_admins}</div>
+                                <div class="stat-label">Adminlar</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${stats.total_tests}</div>
+                                <div class="stat-label">Yaratilgan Testlar</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${stats.total_completed_tests}</div>
+                                <div class="stat-label">Topshirilgan Testlar</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Load statistics error:', error);
+                document.getElementById('statisticsContainer').innerHTML = '<div class="alert alert-error">Statistika yuklashda xatolik!</div>';
+            }
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+
+            alertContainer.appendChild(alertDiv);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                alertDiv.remove();
             }, 5000);
         }
 
-        // Debug function
-        function debugStorage() {
-            const storage = localStorage.getItem('testData');
-            const users = localStorage.getItem('users');
-            
-            console.log('LocalStorage testData:', storage);
-            console.log('LocalStorage users:', users);
-            
-            let debugInfo = 'LocalStorage ma\'lumotlari:\n\n';
-            
-            // Test ma'lumotlari
-            if (storage) {
-                const parsed = JSON.parse(storage);
-                debugInfo += '=== TESTLAR ===\n';
-                Object.keys(parsed).forEach(testCode => {
-                    const test = parsed[testCode];
-                    debugInfo += `Test: ${testCode}\n`;
-                    debugInfo += `- Title: ${test.title}\n`;
-                    debugInfo += `- Savollar: ${test.openCount + test.closedCount}\n`;
-                    debugInfo += `- Javoblar: ${Object.keys(test.answers || {}).length}\n`;
-                    debugInfo += `- Ishtirokchilar: ${Object.keys(test.students || {}).length}\n\n`;
-                });
-            }
-            
-            // Users ma'lumotlari
-            if (users) {
-                const parsedUsers = JSON.parse(users);
-                debugInfo += '\n=== FOYDALANUVCHILAR ===\n';
-                Object.values(parsedUsers).forEach(user => {
-                    debugInfo += `👤 ${user.first_name} ${user.last_name}\n`;
-                    debugInfo += `ID: ${user.id}\n`;
-                    debugInfo += `Testlar: ${user.total_tests || 0}\n`;
-                    debugInfo += `Admin: ${user.is_admin ? 'Ha' : 'Yo\'q'}\n\n`;
-                });
-            }
-            
-            if (!storage && !users) {
-                debugInfo = 'LocalStorage bo\'sh!';
-            }
-            
-            alert(debugInfo);
+        // Close app when needed
+        if (tg.BackButton) {
+            tg.BackButton.show();
+            tg.BackButton.onClick(() => {
+                tg.close();
+            });
         }
     </script>
 </body>
