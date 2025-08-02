@@ -1,5 +1,4 @@
-/ api/save-user.js
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -21,8 +20,8 @@ export default function handler(req, res) {
     }
 
     // Temporary success response
-    res.json({
-      success: true,
+    res.json({ 
+      success: true, 
       user: { telegram_id, username, first_name, full_name },
       message: 'Foydalanuvchi saqlandi (test mode)'
     });
@@ -30,4 +29,4 @@ export default function handler(req, res) {
     console.error('Save user error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
-}
+};

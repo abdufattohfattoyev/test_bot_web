@@ -1,13 +1,6 @@
-// api/save-user.js
-const { Pool } = require('pg');
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
-
-module.exports = async function handler(req, res) {
-  // CORS headers
+/ api/save-user.js
+export default function handler(req, res) {
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -21,46 +14,20 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const {
-      telegram_id,
-      username,
-      first_name,
-      last_name,
-      full_name,
-      is_admin
-    } = req.body;
+    const { telegram_id, username, first_name, last_name, full_name } = req.body;
 
     if (!telegram_id) {
       return res.status(400).json({ error: 'Telegram ID kerak' });
     }
 
-    const result = await pool.query(
-      `INSERT INTO users (telegram_id, username, first_name, last_name, full_name, is_admin, last_active)
-       VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)
-       ON CONFLICT (telegram_id)
-       DO UPDATE SET
-         username = EXCLUDED.username,
-         first_name = EXCLUDED.first_name,
-         last_name = EXCLUDED.last_name,
-         full_name = EXCLUDED.full_name,
-         last_active = CURRENT_TIMESTAMP
-       RETURNING *`,
-      [telegram_id, username, first_name, last_name, full_name, is_admin || false]
-    );
-
-    const user = result.rows[0];
-
-    if (user) {
-      res.json({ 
-        success: true, 
-        user,
-        message: 'Foydalanuvchi muvaffaqiyatli saqlandi'
-      });
-    } else {
-      res.status(400).json({ error: 'Foydalanuvchini saqlashda xatolik' });
-    }
+    // Temporary success response
+    res.json({
+      success: true,
+      user: { telegram_id, username, first_name, full_name },
+      message: 'Foydalanuvchi saqlandi (test mode)'
+    });
   } catch (error) {
     console.error('Save user error:', error);
-    res.status(500).json({ error: 'Server xatosi', details: error.message });
+    res.status(500).json({ error: 'Server xatosi' });
   }
-};
+}

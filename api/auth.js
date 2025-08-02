@@ -1,5 +1,4 @@
-// api/auth.js
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -32,4 +31,4 @@ export default function handler(req, res) {
     console.error('Auth error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
-}
+};
