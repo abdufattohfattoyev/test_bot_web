@@ -1,0 +1,13 @@
+{
+  "name": "test-bot-web",
+  "version": "2.1.0",
+  "scripts": {
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "pg": "^8.11.3"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
