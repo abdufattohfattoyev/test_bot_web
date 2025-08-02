@@ -318,6 +318,11 @@
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
             
+            // Debug: Telegram ma'lumotlarini tekshirish
+            console.log('Telegram WebApp:', window.Telegram.WebApp);
+            console.log('InitData:', window.Telegram.WebApp.initData);
+            console.log('InitDataUnsafe:', window.Telegram.WebApp.initDataUnsafe);
+            
             // Telegram dan user ma'lumotlarini olish
             if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
                 const user = window.Telegram.WebApp.initDataUnsafe.user;
@@ -329,39 +334,133 @@
                     username: user.username || '',
                     language_code: user.language_code || 'uz'
                 };
+                console.log('Telegram User Data:', userData);
+            } else {
+                console.log('Telegram user data not found');
             }
+        } else {
+            console.log('Telegram WebApp not available');
         }
 
         // URL dan parametrlarni olish
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('telegram_id')) {
             telegramId = parseInt(urlParams.get('telegram_id'));
-            // Agar URL dan kelsa, userData yaratish
-            if (!userData.id) {
-                userData = {
-                    id: telegramId,
-                    first_name: 'Unknown',
-                    last_name: '',
-                    username: '',
-                    language_code: 'uz'
-                };
-            }
+            console.log('Telegram ID from URL:', telegramId);
+            
+            // URL dan kelgan ma'lumotlarni parse qilish
+            const firstName = urlParams.get('first_name') || 'Unknown';
+            const lastName = urlParams.get('last_name') || '';
+            const username = urlParams.get('username') || '';
+            
+            userData = {
+                id: telegramId,
+                first_name: firstName,
+                last_name: lastName,
+                username: username,
+                language_code: 'uz'
+            };
+            console.log('User Data from URL:', userData);
+        }
+        
+        userRole = urlParams.get('role') || 'student';
+        
+        // Agar hali ham ma'lumot yo'q bo'lsa, default qiymatlar
+        if (!telegramId) {
+            console.log('No Telegram ID found, using default');
+            telegramId = Date.now(); // Temporary ID
+            userData = {
+                id: telegramId,
+                first_name: 'Test',
+                last_name: 'User',
+                username: '',
+                language_code: 'uz'
+            };
         }
         userRole = urlParams.get('role') || 'student';
 
         function initializeApp() {
+            console.log('=== TELEGRAM WEB APP DEBUG ===');
+            console.log('window.Telegram:', window.Telegram);
+            console.log('WebApp available:', !!window.Telegram?.WebApp);
+            
+            if (window.Telegram?.WebApp) {
+                console.log('WebApp initData:', window.Telegram.WebApp.initData);
+                console.log('WebApp initDataUnsafe:', window.Telegram.WebApp.initDataUnsafe);
+                
+                if (window.Telegram.WebApp.initDataUnsafe?.user) {
+                    const user = window.Telegram.WebApp.initDataUnsafe.user;
+                    telegramId = user.id;
+                    userData = {
+                        id: user.id,
+                        first_name: user.first_name || 'Unknown',
+                        last_name: user.last_name || '',
+                        username: user.username || '',
+                        language_code: user.language_code || 'uz'
+                    };
+                    console.log('✅ Telegram user data found:', userData);
+                } else {
+                    console.log('❌ Telegram user data not found');
+                }
+            }
+            
+            // URL parametrlari
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log('URL params:', Object.fromEntries(urlParams));
+            
+            if (urlParams.get('telegram_id')) {
+                telegramId = parseInt(urlParams.get('telegram_id'));
+                userData = {
+                    id: telegramId,
+                    first_name: urlParams.get('first_name') || 'Unknown',
+                    last_name: urlParams.get('last_name') || '',
+                    username: urlParams.get('username') || '',
+                    language_code: 'uz'
+                };
+                console.log('✅ URL user data found:', userData);
+            }
+            
+            // Fallback - admin ID
+            if (!telegramId && userRole === 'admin') {
+                telegramId = 973358587;
+                userData = {
+                    id: 973358587,
+                    first_name: 'Admin',
+                    last_name: 'User',
+                    username: 'admin',
+                    language_code: 'uz'
+                };
+                console.log('✅ Admin fallback data:', userData);
+            }
+            
+            // Test user uchun fallback
+            if (!telegramId) {
+                telegramId = Date.now();
+                userData = {
+                    id: telegramId,
+                    first_name: 'Test',
+                    last_name: 'User',
+                    username: 'testuser',
+                    language_code: 'uz'
+                };
+                console.log('✅ Test user fallback data:', userData);
+            }
+            
             // Admin ekanligini tekshirish
             isAdmin = ADMIN_IDS.includes(telegramId);
+            console.log('Is Admin:', isAdmin);
             
             // Foydalanuvchini bazaga qo'shish
             saveUserToDatabase();
             
             // User info ko'rsatish
-            const fullName = `${userData.first_name} ${userData.last_name}`.trim() || 'Unknown User';
+            const fullName = `${userData.first_name} ${userData.last_name}`.trim();
             document.getElementById('user-info').innerHTML = `👤 ${fullName} | 🆔 ID: ${telegramId} | 👑 Admin: ${isAdmin ? 'Ha' : 'Yo\'q'}`;
             
             // Tab larni ko'rsatish/yashirish
             setupInterface();
+            
+            console.log('=== INITIALIZATION COMPLETE ===');
         }
 
         function saveUserToDatabase() {
