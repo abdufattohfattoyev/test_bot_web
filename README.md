@@ -1,2 +1,2 @@
 # test_bot_web
-Test NAtijasini TEkshirish Uchun
+Test Natijasini TEkshirish Uchun
