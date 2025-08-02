@@ -1,7 +1,7 @@
 {
   "name": "test-bot-web",
   "version": "2.1.0",
-  "type": "module",
+  "description": "Test Bot Web App with Supabase",
   "scripts": {
     "build": "echo 'Build complete'"
   },
