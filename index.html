@@ -381,13 +381,13 @@
 
         function initializeApp() {
             console.log('=== TELEGRAM WEB APP DEBUG ===');
-            console.log('window.Telegram:', window.Telegram);
-            console.log('WebApp available:', !!window.Telegram?.WebApp);
             
+            // Telegram WebApp dan ma'lumot olish
             if (window.Telegram?.WebApp) {
-                console.log('WebApp initData:', window.Telegram.WebApp.initData);
+                console.log('WebApp available: true');
                 console.log('WebApp initDataUnsafe:', window.Telegram.WebApp.initDataUnsafe);
                 
+                // WebApp dan to'liq ma'lumot olish
                 if (window.Telegram.WebApp.initDataUnsafe?.user) {
                     const user = window.Telegram.WebApp.initDataUnsafe.user;
                     telegramId = user.id;
@@ -396,71 +396,66 @@
                         first_name: user.first_name || 'Unknown',
                         last_name: user.last_name || '',
                         username: user.username || '',
-                        language_code: user.language_code || 'uz'
+                        language_code: user.language_code || 'uz',
+                        photo_url: user.photo_url || ''
                     };
                     console.log('✅ Telegram user data found:', userData);
-                } else {
-                    console.log('❌ Telegram user data not found');
                 }
             }
             
-            // URL parametrlari
+            // Browser URL dan ma'lumot olish (fallback)
             const urlParams = new URLSearchParams(window.location.search);
             console.log('URL params:', Object.fromEntries(urlParams));
             
-            if (urlParams.get('telegram_id')) {
+            // Agar WebApp dan ma'lumot kelmagan bo'lsa, URL dan olish
+            if (!telegramId && urlParams.get('telegram_id')) {
                 telegramId = parseInt(urlParams.get('telegram_id'));
                 userData = {
                     id: telegramId,
-                    first_name: urlParams.get('first_name') || 'Unknown',
-                    last_name: urlParams.get('last_name') || '',
+                    first_name: decodeURIComponent(urlParams.get('first_name') || 'Unknown'),
+                    last_name: decodeURIComponent(urlParams.get('last_name') || ''),
                     username: urlParams.get('username') || '',
                     language_code: 'uz'
                 };
                 console.log('✅ URL user data found:', userData);
             }
             
-            // Fallback - admin ID
-            if (!telegramId && userRole === 'admin') {
-                telegramId = 973358587;
+            // Role ni URL dan olish
+            userRole = urlParams.get('role') || 'student';
+            console.log('User role:', userRole);
+            
+            // Manual admin ID tekshirish (development uchun)
+            if (!telegramId) {
+                // Test - agar browser dan ochsa
+                telegramId = 973358587; // Sizning ID ingiz
                 userData = {
                     id: 973358587,
-                    first_name: 'Admin',
-                    last_name: 'User',
-                    username: 'admin',
+                    first_name: 'АБДУФАТТОҲ',
+                    last_name: 'ФАТТОЕВ',
+                    username: 'FATTOYEVABDUFATTOH',
                     language_code: 'uz'
                 };
-                console.log('✅ Admin fallback data:', userData);
-            }
-            
-            // Test user uchun fallback
-            if (!telegramId) {
-                telegramId = Date.now();
-                userData = {
-                    id: telegramId,
-                    first_name: 'Test',
-                    last_name: 'User',
-                    username: 'testuser',
-                    language_code: 'uz'
-                };
-                console.log('✅ Test user fallback data:', userData);
+                userRole = 'admin';
+                console.log('✅ Manual admin data set:', userData);
             }
             
             // Admin ekanligini tekshirish
-            isAdmin = ADMIN_IDS.includes(telegramId);
-            console.log('Is Admin:', isAdmin);
+            isAdmin = ADMIN_IDS.includes(telegramId) || userRole === 'admin';
+            console.log('Is Admin:', isAdmin, 'Telegram ID:', telegramId);
             
             // Foydalanuvchini bazaga qo'shish
             saveUserToDatabase();
             
             // User info ko'rsatish
             const fullName = `${userData.first_name} ${userData.last_name}`.trim();
-            document.getElementById('user-info').innerHTML = `👤 ${fullName} | 🆔 ID: ${telegramId} | 👑 Admin: ${isAdmin ? 'Ha' : 'Yo\'q'}`;
+            document.getElementById('user-info').innerHTML = `👤 ${fullName} | 🆔 ID: ${telegramId} | 👑 Admin: ${isAdmin ? 'Ha' : 'Yo\'q'} | 🎭 Role: ${userRole}`;
             
             // Tab larni ko'rsatish/yashirish
             setupInterface();
             
             console.log('=== INITIALIZATION COMPLETE ===');
+            console.log('Final userData:', userData);
+            console.log('Final isAdmin:', isAdmin);
         }
 
         function saveUserToDatabase() {
@@ -487,16 +482,26 @@
         function setupInterface() {
             const tabsContainer = document.querySelector('.tabs');
             
-            if (isAdmin && userRole === 'admin') {
+            console.log('Setting up interface for:', { isAdmin, userRole, telegramId });
+            
+            if (isAdmin) {
                 // Admin uchun barcha tablar
                 tabsContainer.innerHTML = `
                     <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
                     <button class="tab-btn" onclick="showTab('student')">Test Ko'rish</button>
                     <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
                 `;
+                
+                // Admin panel ni ko'rsatish
                 document.getElementById('admin-tab').classList.add('active');
                 document.getElementById('student-tab').classList.remove('active');
                 document.getElementById('results-tab').classList.remove('active');
+                
+                // Admin panelni ko'rsatish
+                document.getElementById('admin-tab').style.display = 'block';
+                document.getElementById('results-tab').style.display = 'block';
+                
+                console.log('✅ Admin interface setup complete');
             } else {
                 // Student uchun faqat test topshirish
                 tabsContainer.innerHTML = `
@@ -525,6 +530,8 @@
                 
                 // User statistikasini ko'rsatish
                 showUserStats();
+                
+                console.log('✅ Student interface setup complete');
             }
         }
 
