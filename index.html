@@ -14,38 +14,39 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
             color: white;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
 
         .user-info {
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 50px;
             margin-top: 15px;
             font-size: 14px;
+            display: inline-block;
         }
 
         .tabs {
@@ -60,24 +61,42 @@
             border: none;
             background: transparent;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             transition: all 0.3s;
+            position: relative;
         }
 
         .tab-btn.active {
             background: white;
-            color: #4facfe;
-            border-bottom: 3px solid #4facfe;
+            color: #3a7bd5;
+        }
+
+        .tab-btn.active:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: #3a7bd5;
+            border-radius: 3px 3px 0 0;
         }
 
         .tab-content {
             display: none;
-            padding: 30px;
+            padding: 25px;
         }
 
         .tab-content.active {
             display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
@@ -88,25 +107,24 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
+            color: #444;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 12px 15px;
             border: 2px solid #e9ecef;
             border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: #f8f9fa;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-control:focus {
             outline: none;
-            border-color: #4facfe;
+            border-color: #3a7bd5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
         }
 
         .btn {
@@ -118,179 +136,361 @@
             cursor: pointer;
             transition: all 0.3s;
             margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            margin-right: 8px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
             color: white;
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #fa4b99 0%, #ff6b6b 100%);
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
             color: white;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Test savollari uchun stil */
         .question-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #3a7bd5;
+        }
+
+        .question-title {
+            font-weight: 600;
             margin-bottom: 15px;
-            border-left: 4px solid #4facfe;
+            color: #333;
         }
 
-        .answer-input {
-            background: #fff;
-            border: 2px solid #e9ecef;
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
             border-radius: 8px;
-            padding: 10px;
-            margin: 5px 0;
-            width: 100%;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #e9ecef;
         }
 
+        .option-item:hover {
+            background: #e9ecef;
+        }
+
+        .option-item.selected {
+            background: #d1e7ff;
+            border-color: #3a7bd5;
+        }
+
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #3a7bd5;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            flex-grow: 1;
+        }
+
+        /* Natijalar uchun stil */
         .result-item {
             background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid #38ef7d;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-name {
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
         }
 
         .score {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #28a745;
+            color: #11998e;
         }
 
-        .export-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #38ef7d, #11998e);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Xabarlar uchun stil */
+        .alert {
+            padding: 15px;
             border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
+            margin: 10px 0;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
         }
 
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Yashirin elementlar */
         .hidden {
             display: none;
         }
 
-        .success-msg {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 10px 0;
-            border: 1px solid #c3e6cb;
+        /* Test natijalari */
+        .test-summary {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
 
-        .error-msg {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
+        .test-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #3a7bd5;
+        }
+
+        .test-score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #11998e;
             margin: 10px 0;
-            border: 1px solid #f5c6cb;
+        }
+
+        .test-percentage {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Ikonlar uchun joy */
+        .icon {
+            margin-right: 8px;
+        }
+
+        /* Responsive stil */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                padding: 12px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
+    <!-- Font Awesome ikonlari -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Test Tizimi</h1>
-            <p id="role-info">Test yaratish va topshirish</p>
-            <div class="user-info" id="user-info"></div>
+            <h1><i class="fas fa-graduation-cap"></i> Test Tizimi</h1>
+            <p id="role-info">Professional test yaratish va topshirish platformasi</p>
+            <div class="user-info" id="user-info">
+                <i class="fas fa-user"></i> ID: ... | <i class="fas fa-user-tag"></i> Yuklanmoqda...
+            </div>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
-            <button class="tab-btn" onclick="showTab('student')">Test Topshirish</button>
-            <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+            <button class="tab-btn active" onclick="showTab('admin')"><i class="fas fa-cogs"></i> Admin</button>
+            <button class="tab-btn" onclick="showTab('student')"><i class="fas fa-edit"></i> Test</button>
+            <button class="tab-btn" onclick="showTab('results')"><i class="fas fa-chart-bar"></i> Natijalar</button>
         </div>
 
         <!-- Admin Panel -->
         <div id="admin-tab" class="tab-content active">
-            <h2>🔧 Admin Panel</h2>
+            <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+            
+            <div class="alert alert-info" id="admin-alert" style="display: none;"></div>
             
             <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="admin-test-code" placeholder="Masalan: TEST001">
+                <label><i class="fas fa-barcode"></i> Test kodi:</label>
+                <input type="text" id="admin-test-code" class="form-control" placeholder="TEST001">
             </div>
             
             <div class="form-group">
-                <label>Test nomi:</label>
-                <input type="text" id="admin-test-title" placeholder="Test nomini kiriting">
+                <label><i class="fas fa-heading"></i> Test nomi:</label>
+                <input type="text" id="admin-test-title" class="form-control" placeholder="Test nomini kiriting">
             </div>
             
             <div class="form-group">
-                <label>Ochiq savollar soni:</label>
-                <input type="number" id="open-questions-count" min="0" value="0">
+                <label><i class="fas fa-question-circle"></i> Ochiq savollar soni:</label>
+                <input type="number" id="open-questions-count" class="form-control" min="0" value="0">
             </div>
             
             <div class="form-group">
-                <label>Yopiq savollar soni:</label>
-                <input type="number" id="closed-questions-count" min="0" value="0">
+                <label><i class="fas fa-list-ol"></i> Yopiq savollar soni:</label>
+                <input type="number" id="closed-questions-count" class="form-control" min="0" value="5">
             </div>
             
             <div class="form-group">
-                <label>Har bir yopiq savolda variantlar soni:</label>
-                <input type="number" id="options-count" min="2" max="6" value="4">
+                <label><i class="fas fa-tasks"></i> Har bir yopiq savolda variantlar soni:</label>
+                <input type="number" id="options-count" class="form-control" min="2" max="6" value="4">
             </div>
             
-            <button class="btn btn-primary" onclick="createTest()">Test yaratish</button>
-            <button class="btn btn-danger" onclick="debugStorage()">Debug Storage</button>
+            <div class="form-group">
+                <button class="btn btn-primary" onclick="createTest()"><i class="fas fa-plus-circle"></i> Test yaratish</button>
+                <button class="btn btn-secondary" onclick="debugStorage()"><i class="fas fa-bug"></i> Debug</button>
+            </div>
             
             <div id="answers-section" class="hidden">
-                <h3>Javoblarni kiriting:</h3>
+                <h3><i class="fas fa-check-circle"></i> Javoblarni kiriting:</h3>
                 <div id="answers-form"></div>
-                <button class="btn btn-success" onclick="saveAnswers()">Javoblarni saqlash</button>
+                <button class="btn btn-success" onclick="saveAnswers()"><i class="fas fa-save"></i> Javoblarni saqlash</button>
             </div>
         </div>
 
         <!-- Student Panel -->
         <div id="student-tab" class="tab-content">
-            <h2>📝 Test Topshirish</h2>
+            <h2><i class="fas fa-edit"></i> Test Topshirish</h2>
+            
+            <div class="alert" id="student-alert" style="display: none;"></div>
             
             <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="student-test-code" placeholder="Test kodini kiriting">
+                <label><i class="fas fa-barcode"></i> Test kodi:</label>
+                <input type="text" id="student-test-code" class="form-control" placeholder="Test kodini kiriting">
             </div>
             
             <div class="form-group">
-                <label>Ism Familiya:</label>
-                <input type="text" id="student-name" placeholder="Ism familiyangizni kiriting">
+                <label><i class="fas fa-user"></i> Ism Familiya:</label>
+                <input type="text" id="student-name" class="form-control" placeholder="Ism familiyangizni kiriting">
             </div>
             
-            <button class="btn btn-primary" onclick="startTest()">Testni boshlash</button>
+            <button class="btn btn-primary" onclick="startTest()"><i class="fas fa-play"></i> Testni boshlash</button>
             
             <div id="test-section" class="hidden">
-                <h3>Test savollari:</h3>
+                <div class="test-summary">
+                    <h3 class="test-title" id="test-display-title">Test nomi</h3>
+                    <p id="test-instructions">Har bir savolga javob bering. Testni tugatgach, "Testni yakunlash" tugmasini bosing.</p>
+                </div>
+                
                 <div id="test-form"></div>
-                <button class="btn btn-success" onclick="submitTest()">Testni yakunlash</button>
+                
+                <div class="form-group" style="text-align: center;">
+                    <button class="btn btn-success" onclick="submitTest()"><i class="fas fa-check-circle"></i> Testni yakunlash</button>
+                    <button class="btn btn-danger" onclick="cancelTest()"><i class="fas fa-times-circle"></i> Bekor qilish</button>
+                </div>
+            </div>
+            
+            <div id="test-result-section" class="hidden">
+                <div class="test-summary">
+                    <h3 class="test-title">Test natijalari</h3>
+                    <div class="test-score" id="result-score">0/0</div>
+                    <div class="test-percentage" id="result-percentage">0%</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="result-progress" style="width: 0%"></div>
+                    </div>
+                    <p id="result-message"></p>
+                </div>
+                
+                <button class="btn btn-primary" onclick="restartTest()"><i class="fas fa-redo"></i> Yangi test</button>
             </div>
         </div>
 
         <!-- Results Panel -->
         <div id="results-tab" class="tab-content">
-            <h2>📊 Natijalar</h2>
+            <h2><i class="fas fa-chart-bar"></i> Natijalar</h2>
+            
+            <div class="alert" id="results-alert" style="display: none;"></div>
             
             <div class="form-group">
-                <label>Test kodi:</label>
-                <input type="text" id="results-test-code" placeholder="Test kodini kiriting">
-                <button class="btn btn-primary" onclick="loadResults()">Natijalarni yuklash</button>
+                <label><i class="fas fa-barcode"></i> Test kodi:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="results-test-code" class="form-control" placeholder="Test kodini kiriting">
+                    <button class="btn btn-primary" onclick="loadResults()"><i class="fas fa-search"></i> Yuklash</button>
+                </div>
             </div>
             
             <div id="results-section"></div>
@@ -300,9 +500,10 @@
     <script>
         // Global variables
         let telegramId = null;
-        let userRole = 'student';  // Default student
+        let userRole = 'student';
         let currentTest = null;
         let isAdmin = false;
+        let testInProgress = false;
 
         // Admin IDs - sizning ID ingiz
         const ADMIN_IDS = [973358587];
@@ -317,7 +518,6 @@
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
             
-            // Telegram dan user ma'lumotlarini olish
             if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
                 telegramId = window.Telegram.WebApp.initDataUnsafe.user.id;
             }
@@ -335,10 +535,24 @@
             isAdmin = ADMIN_IDS.includes(telegramId);
             
             // User info ko'rsatish
-            document.getElementById('user-info').innerHTML = `🆔 ID: ${telegramId || 'Unknown'} | 👤 Role: ${userRole} | 👑 Admin: ${isAdmin ? 'Ha' : 'Yo\'q'}`;
+            updateUserInfo();
             
             // Tab larni ko'rsatish/yashirish
             setupInterface();
+            
+            // LocalStorage dan ma'lumotlarni olish
+            testData = JSON.parse(localStorage.getItem('testData') || '{}');
+        }
+
+        function updateUserInfo() {
+            const userInfo = document.getElementById('user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <i class="fas fa-user"></i> ID: ${telegramId || 'Noma\'lum'} | 
+                    <i class="fas fa-user-tag"></i> ${userRole === 'admin' ? 'Admin' : 'Talaba'} | 
+                    <i class="fas fa-crown"></i> ${isAdmin ? 'Ha' : 'Yo\'q'}
+                `;
+            }
         }
 
         function setupInterface() {
@@ -347,9 +561,9 @@
             if (isAdmin && userRole === 'admin') {
                 // Admin uchun barcha tablar
                 tabsContainer.innerHTML = `
-                    <button class="tab-btn active" onclick="showTab('admin')">Admin Panel</button>
-                    <button class="tab-btn" onclick="showTab('student')">Test Ko'rish</button>
-                    <button class="tab-btn" onclick="showTab('results')">Natijalar</button>
+                    <button class="tab-btn active" onclick="showTab('admin')"><i class="fas fa-cogs"></i> Admin</button>
+                    <button class="tab-btn" onclick="showTab('student')"><i class="fas fa-edit"></i> Test</button>
+                    <button class="tab-btn" onclick="showTab('results')"><i class="fas fa-chart-bar"></i> Natijalar</button>
                 `;
                 document.getElementById('admin-tab').classList.add('active');
                 document.getElementById('student-tab').classList.remove('active');
@@ -357,7 +571,7 @@
             } else {
                 // Student uchun faqat test topshirish
                 tabsContainer.innerHTML = `
-                    <button class="tab-btn active" onclick="showTab('student')">Test Topshirish</button>
+                    <button class="tab-btn active" onclick="showTab('student')"><i class="fas fa-edit"></i> Test Topshirish</button>
                 `;
                 document.getElementById('admin-tab').classList.remove('active');
                 document.getElementById('student-tab').classList.add('active');
@@ -376,7 +590,7 @@
         function showTab(tabName) {
             // Admin huquqlarini tekshirish
             if ((tabName === 'admin' || tabName === 'results') && !isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                showAlert('❌ Sizda admin huquqlari yo\'q!', 'error', 'student-alert');
                 return;
             }
             
@@ -394,18 +608,18 @@
         // Admin: Create test
         function createTest() {
             if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                showAlert('❌ Sizda admin huquqlari yo\'q!', 'error', 'admin-alert');
                 return;
             }
             
-            const testCode = document.getElementById('admin-test-code').value.trim();
+            const testCode = document.getElementById('admin-test-code').value.trim().toUpperCase();
             const testTitle = document.getElementById('admin-test-title').value.trim();
             const openCount = parseInt(document.getElementById('open-questions-count').value);
             const closedCount = parseInt(document.getElementById('closed-questions-count').value);
             const optionsCount = parseInt(document.getElementById('options-count').value);
 
             if (!testCode || !testTitle || (openCount === 0 && closedCount === 0)) {
-                showMessage('Barcha maydonlarni to\'ldiring va kamida bitta savol turi kerak!', 'error');
+                showAlert('Barcha maydonlarni to\'ldiring va kamida bitta savol turi kerak!', 'error', 'admin-alert');
                 return;
             }
 
@@ -418,7 +632,7 @@
                 answers: {},
                 students: {},
                 createdBy: telegramId,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toLocaleString('uz-UZ')
             };
 
             localStorage.setItem('testData', JSON.stringify(testData));
@@ -426,7 +640,7 @@
             // Javoblar formasini yaratish
             createAnswersForm(testCode, openCount, closedCount, optionsCount);
             document.getElementById('answers-section').classList.remove('hidden');
-            showMessage('Test yaratildi! Endi javoblarni kiriting.', 'success');
+            showAlert('✅ Test yaratildi! Endi javoblarni kiriting.', 'success', 'admin-alert');
         }
 
         // Create answers form
@@ -439,8 +653,8 @@
                 const div = document.createElement('div');
                 div.className = 'question-item';
                 div.innerHTML = `
-                    <label>Ochiq savol ${i} - To'g'ri javob:</label>
-                    <input type="text" id="open-${i}" class="answer-input" placeholder="To'g'ri javobni kiriting">
+                    <div class="question-title">Ochiq savol ${i} - To'g'ri javob:</div>
+                    <input type="text" id="open-${i}" class="form-control" placeholder="To'g'ri javobni kiriting">
                 `;
                 form.appendChild(div);
             }
@@ -450,10 +664,11 @@
                 const div = document.createElement('div');
                 div.className = 'question-item';
                 div.innerHTML = `
-                    <label>Yopiq savol ${i} - To'g'ri javob:</label>
-                    <select id="closed-${i}" class="answer-input">
+                    <div class="question-title">Yopiq savol ${i} - To'g'ri javob:</div>
+                    <select id="closed-${i}" class="form-control">
+                        <option value="">Tanlang</option>
                         ${Array.from({length: optionsCount}, (_, j) => 
-                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
+                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)} variant</option>`
                         ).join('')}
                     </select>
                 `;
@@ -464,15 +679,15 @@
         // Save answers
         function saveAnswers() {
             if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                showAlert('❌ Sizda admin huquqlari yo\'q!', 'error', 'admin-alert');
                 return;
             }
             
-            const testCode = document.getElementById('admin-test-code').value.trim();
+            const testCode = document.getElementById('admin-test-code').value.trim().toUpperCase();
             const testInfo = testData[testCode];
             
             if (!testInfo) {
-                showMessage('Test topilmadi!', 'error');
+                showAlert('Test topilmadi!', 'error', 'admin-alert');
                 return;
             }
 
@@ -506,7 +721,7 @@
             }
 
             if (emptyCount > 0) {
-                showMessage(`${emptyCount} ta javob kiritilmagan!`, 'error');
+                showAlert(`${emptyCount} ta javob kiritilmagan!`, 'error', 'admin-alert');
                 return;
             }
 
@@ -514,20 +729,16 @@
             testData[testCode].answers = answers;
             localStorage.setItem('testData', JSON.stringify(testData));
             
-            // Debug - console da ko'rsatish
-            console.log('Saqlangan testData:', testData);
-            console.log('Javoblar:', answers);
-            
-            showMessage(`Javoblar saqlandi! (${Object.keys(answers).length} ta javob)`, 'success');
+            showAlert(`✅ Javoblar saqlandi! (${Object.keys(answers).length} ta javob)`, 'success', 'admin-alert');
         }
 
         // Student: Start test
         function startTest() {
-            const testCode = document.getElementById('student-test-code').value.trim();
+            const testCode = document.getElementById('student-test-code').value.trim().toUpperCase();
             const studentName = document.getElementById('student-name').value.trim();
 
             if (!testCode || !studentName) {
-                showMessage('Test kodi va ism-familiya kerak!', 'error');
+                showAlert('Test kodi va ism-familiya kerak!', 'error', 'student-alert');
                 return;
             }
 
@@ -535,20 +746,25 @@
             testData = JSON.parse(localStorage.getItem('testData') || '{}');
             
             if (!testData[testCode]) {
-                showMessage('Test topilmadi yoki admin javoblarni kiritmagan!', 'error');
-                console.log('Mavjud testlar:', Object.keys(testData));
+                showAlert('Test topilmadi! Admin bilan bog\'laning.', 'error', 'student-alert');
                 return;
             }
 
             if (!testData[testCode].answers || Object.keys(testData[testCode].answers).length === 0) {
-                showMessage('Test javoblari kiritilmagan! Admin bilan bog\'laning.', 'error');
+                showAlert('Test javoblari kiritilmagan! Admin bilan bog\'laning.', 'error', 'student-alert');
                 return;
             }
 
             currentTest = testData[testCode];
+            testInProgress = true;
+            
+            // Test nomini ko'rsatish
+            document.getElementById('test-display-title').textContent = currentTest.title;
+            
             createTestForm(testCode);
             document.getElementById('test-section').classList.remove('hidden');
-            showMessage('Test boshlandi!', 'success');
+            document.getElementById('student-alert').style.display = 'none';
+            showAlert('Test boshlandi! Savollarga javob bering.', 'success', 'student-alert');
         }
 
         // Create test form for student
@@ -562,8 +778,8 @@
                 const div = document.createElement('div');
                 div.className = 'question-item';
                 div.innerHTML = `
-                    <label>Ochiq savol ${i}:</label>
-                    <input type="text" id="student-open-${i}" class="answer-input" placeholder="Javobingizni kiriting">
+                    <div class="question-title">Ochiq savol ${i}:</div>
+                    <input type="text" id="student-open-${i}" class="form-control" placeholder="Javobingizni kiriting">
                 `;
                 form.appendChild(div);
             }
@@ -572,32 +788,70 @@
             for (let i = 1; i <= test.closedCount; i++) {
                 const div = document.createElement('div');
                 div.className = 'question-item';
+                
+                let optionsHTML = '';
+                for (let j = 0; j < test.optionsCount; j++) {
+                    const letter = String.fromCharCode(65 + j);
+                    optionsHTML += `
+                        <div class="option-item" onclick="selectOption(this, 'student-closed-${i}')" data-value="${letter}">
+                            <div class="option-letter">${letter}</div>
+                            <div class="option-text">${letter} variant</div>
+                        </div>
+                    `;
+                }
+                
                 div.innerHTML = `
-                    <label>Yopiq savol ${i}:</label>
-                    <select id="student-closed-${i}" class="answer-input">
-                        <option value="">Javobni tanlang</option>
-                        ${Array.from({length: test.optionsCount}, (_, j) => 
-                            `<option value="${String.fromCharCode(65 + j)}">${String.fromCharCode(65 + j)}</option>`
-                        ).join('')}
-                    </select>
+                    <div class="question-title">Yopiq savol ${i}:</div>
+                    <div class="options-grid">
+                        ${optionsHTML}
+                    </div>
+                    <input type="hidden" id="student-closed-${i}" value="">
                 `;
                 form.appendChild(div);
             }
         }
 
+        // Select option for closed questions
+        function selectOption(element, questionId) {
+            const container = element.parentElement;
+            const value = element.getAttribute('data-value');
+            
+            // Remove selected class from all options
+            container.querySelectorAll('.option-item').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            
+            // Update hidden input value
+            document.getElementById(questionId).value = value;
+        }
+
+        // Cancel test
+        function cancelTest() {
+            if (confirm('Testni bekor qilmoqchimisiz? Barcha javoblar yo\'qoladi.')) {
+                document.getElementById('test-section').classList.add('hidden');
+                document.getElementById('student-alert').style.display = 'none';
+                testInProgress = false;
+                currentTest = null;
+            }
+        }
+
         // Submit test
         function submitTest() {
-            const testCode = document.getElementById('student-test-code').value.trim();
+            const testCode = document.getElementById('student-test-code').value.trim().toUpperCase();
             const studentName = document.getElementById('student-name').value.trim();
 
             if (!currentTest) {
-                showMessage('Test ma\'lumotlari topilmadi!', 'error');
+                showAlert('Test ma\'lumotlari topilmadi!', 'error', 'student-alert');
                 return;
             }
 
             const answers = {};
             let score = 0;
             let totalQuestions = currentTest.openCount + currentTest.closedCount;
+            let unanswered = 0;
 
             // Collect and check open answers
             for (let i = 1; i <= currentTest.openCount; i++) {
@@ -606,7 +860,8 @@
                 
                 answers[`open-${i}`] = studentAnswer;
                 
-                if (correctAnswer && studentAnswer === correctAnswer) {
+                if (!studentAnswer) unanswered++;
+                else if (correctAnswer && studentAnswer === correctAnswer) {
                     score++;
                 }
             }
@@ -618,9 +873,14 @@
                 
                 answers[`closed-${i}`] = studentAnswer;
                 
-                if (studentAnswer === correctAnswer) {
+                if (!studentAnswer) unanswered++;
+                else if (studentAnswer === correctAnswer) {
                     score++;
                 }
+            }
+
+            if (unanswered > 0 && !confirm(`${unanswered} ta savolga javob bermadingiz. Testni yakunlamoqchimisiz?`)) {
+                return;
             }
 
             // Save student result
@@ -628,31 +888,61 @@
                 testData[testCode].students = {};
             }
 
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
             testData[testCode].students[studentName] = {
                 answers: answers,
                 score: score,
                 total: totalQuestions,
-                percentage: Math.round((score / totalQuestions) * 100),
+                percentage: percentage,
                 telegramId: telegramId,
                 timestamp: new Date().toLocaleString('uz-UZ')
             };
 
             localStorage.setItem('testData', JSON.stringify(testData));
 
-            showMessage(`Test yakunlandi!\nNatija: ${score}/${totalQuestions} (${Math.round((score / totalQuestions) * 100)}%)`, 'success');
+            // Show results
+            showTestResults(score, totalQuestions, percentage);
+        }
+
+        // Show test results
+        function showTestResults(score, total, percentage) {
+            document.getElementById('test-section').classList.add('hidden');
+            document.getElementById('test-result-section').classList.remove('hidden');
+            
+            document.getElementById('result-score').textContent = `${score}/${total}`;
+            document.getElementById('result-percentage').textContent = `${percentage}%`;
+            document.getElementById('result-progress').style.width = `${percentage}%`;
+            
+            let message = '';
+            if (percentage >= 90) message = 'Ajoyib! Siz a\'lo bahoga erishdingiz!';
+            else if (percentage >= 75) message = 'Yaxshi! Siz yaxshi natija ko\'rsatdingiz.';
+            else if (percentage >= 50) message = 'Qoniqarli. Yana bir bor urinib ko\'ring.';
+            else message = 'Qoniqarsiz. Qo\'shimcha mashq qilishingiz kerak.';
+            
+            document.getElementById('result-message').textContent = message;
+            
+            testInProgress = false;
+        }
+
+        // Restart test
+        function restartTest() {
+            document.getElementById('test-result-section').classList.add('hidden');
+            document.getElementById('student-test-code').value = '';
+            document.getElementById('student-name').value = '';
         }
 
         // Load results
         function loadResults() {
             if (!isAdmin) {
-                showMessage('❌ Sizda admin huquqlari yo\'q!', 'error');
+                showAlert('❌ Sizda admin huquqlari yo\'q!', 'error', 'results-alert');
                 return;
             }
             
-            const testCode = document.getElementById('results-test-code').value.trim();
+            const testCode = document.getElementById('results-test-code').value.trim().toUpperCase();
             
             if (!testCode) {
-                showMessage('Test kodi kerak!', 'error');
+                showAlert('Test kodi kerak!', 'error', 'results-alert');
                 return;
             }
 
@@ -660,7 +950,7 @@
             testData = JSON.parse(localStorage.getItem('testData') || '{}');
             
             if (!testData[testCode]) {
-                showMessage('Test topilmadi!', 'error');
+                showAlert('Test topilmadi!', 'error', 'results-alert');
                 return;
             }
 
@@ -669,26 +959,42 @@
             const resultsSection = document.getElementById('results-section');
 
             if (Object.keys(students).length === 0) {
-                resultsSection.innerHTML = '<p>Hali hech kim test topshirmagan.</p>';
+                resultsSection.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle"></i> Hali hech kim test topshirmagan.</div>';
                 return;
             }
 
-            let html = `<h3>${testInfo.title} - Test natijalari:</h3>`;
+            let html = `<h3><i class="fas fa-list-ol"></i> ${testInfo.title} - Test natijalari:</h3>`;
             
-            Object.entries(students).forEach(([name, data]) => {
+            // Sort students by score (descending)
+            const sortedStudents = Object.entries(students).sort((a, b) => b[1].score - a[1].score);
+            
+            sortedStudents.forEach(([name, data]) => {
                 html += `
                     <div class="result-item">
-                        <h4>${name}</h4>
-                        <div class="score">Natija: ${data.score}/${data.total} (${data.percentage}%)</div>
-                        <p>ID: ${data.telegramId}</p>
-                        <p>Vaqt: ${data.timestamp}</p>
+                        <div class="result-header">
+                            <div class="result-name">${name}</div>
+                            <div class="score">${data.score}/${data.total}</div>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: ${data.percentage}%"></div>
+                        </div>
+                        <div class="result-details">
+                            <div><i class="fas fa-percentage"></i> ${data.percentage}%</div>
+                            <div><i class="fas fa-id-card"></i> ${data.telegramId || 'Noma\'lum'}</div>
+                            <div><i class="fas fa-clock"></i> ${data.timestamp}</div>
+                        </div>
                     </div>
                 `;
             });
 
-            html += `<button class="export-btn" onclick="exportResults('${testCode}')">Excel ga export qilish</button>`;
+            html += `
+                <button class="btn btn-primary" onclick="exportResults('${testCode}')" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-file-excel"></i> Excel ga export qilish
+                </button>
+            `;
             
             resultsSection.innerHTML = html;
+            showAlert(`✅ ${sortedStudents.length} ta natija yuklandi`, 'success', 'results-alert');
         }
 
         // Export results
@@ -707,29 +1013,31 @@
             const url = URL.createObjectURL(blob);
             
             link.setAttribute('href', url);
-            link.setAttribute('download', `test_${testCode}_results.csv`);
+            link.setAttribute('download', `test_${testCode}_results_${new Date().toISOString().slice(0,10)}.csv`);
             link.style.visibility = 'hidden';
             
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             
-            showMessage('Natijalar yuklab olindi!', 'success');
+            showAlert('Natijalar yuklab olindi!', 'success', 'results-alert');
         }
 
-        // Show message
-        function showMessage(message, type) {
-            const className = type === 'success' ? 'success-msg' : 'error-msg';
-            const messageDiv = document.createElement('div');
-            messageDiv.className = className;
-            messageDiv.textContent = message;
+        // Show alert message
+        function showAlert(message, type, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
             
-            document.body.appendChild(messageDiv);
+            container.innerHTML = `
+                <div class="alert ${type === 'success' ? 'alert-success' : 'alert-error'}">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            container.style.display = 'block';
             
             setTimeout(() => {
-                if (document.body.contains(messageDiv)) {
-                    document.body.removeChild(messageDiv);
-                }
+                container.style.display = 'none';
             }, 5000);
         }
 
@@ -746,9 +1054,10 @@
                 Object.keys(parsed).forEach(testCode => {
                     const test = parsed[testCode];
                     debugInfo += `Test: ${testCode}\n`;
-                    debugInfo += `- Title: ${test.title}\n`;
-                    debugInfo += `- Savollar: ${test.openCount + test.closedCount}\n`;
-                    debugInfo += `- Javoblar: ${Object.keys(test.answers || {}).length}\n\n`;
+                    debugInfo += `- Nomi: ${test.title}\n`;
+                    debugInfo += `- Savollar: ${test.openCount} ochiq + ${test.closedCount} yopiq = ${test.openCount + test.closedCount}\n`;
+                    debugInfo += `- Javoblar: ${Object.keys(test.answers || {}).length}\n`;
+                    debugInfo += `- Topshirganlar: ${Object.keys(test.students || {}).length}\n\n`;
                 });
                 
                 alert(debugInfo);
